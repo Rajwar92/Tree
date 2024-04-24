@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE task PUBLIC "-//OASIS//DTD DITA Task//EN" "task.dtd">
+<task id="TEC_PTaks">
+    <title>Tree1</title>
+    <shortdesc></shortdesc>
+    <taskbody>
+        <context>
+            <p>Test</p>
+        </context>
+        <steps>
+            <step>
+                <cmd>Test</cmd>
+            </step>
+        </steps>
+    </taskbody>
+</task>
