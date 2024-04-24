@@ -2,7 +2,6 @@
 <!DOCTYPE map PUBLIC "-//OASIS//DTD DITA Map//EN" "map.dtd">
 <map>
     <title></title>
-    <topicref href="Prakash.dita">
-        <topicref href="glv_branch_task.dita"/>
-    </topicref>
+    <topicref href="Prakash.dita"/>
+    <topicref href="glv_branch_task.dita"/>
 </map>
