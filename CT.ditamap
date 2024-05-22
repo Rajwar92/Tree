@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE map PUBLIC "-//OASIS//DTD DITA Map//EN" "map.dtd">
-<map>
-    <title>Control Tower</title>
-    <topicref href="RN1.dita"/>
-    <topicref href="RN2.dita"/>
-    <topicref href="RN3.dita"/>
-    <topicref href="RN4.dita"/>
-</map>
