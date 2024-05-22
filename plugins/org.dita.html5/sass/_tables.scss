@@ -1,0 +1,83 @@
+// This file is part of the DITA Open Toolkit project.
+//
+// Copyright 2016 Roger Sheen
+//
+// See the accompanying LICENSE file for applicable license.
+
+// Sass partial for table styles
+
+table {
+  border-collapse: collapse;
+}
+
+table .desc {
+  display: block;
+  font-style: italic;
+}
+
+// @pgwide
+
+.table--pgwide-1 {
+  width: 100%;
+}
+
+// @align
+
+$align: left right center justify char;
+
+@each $value in $align {
+  .align-#{$value} {
+    text-align: $value;
+  }
+}
+
+// @valign
+
+$valign: top bottom middle;
+
+@each $value in $valign {
+  .valign-#{$value} {
+    vertical-align: $value;
+  }
+}
+
+// @colsep
+
+.colsep-0 {
+  border-right: 0;
+}
+
+.colsep-1 {
+  border-right: 1px solid;
+}
+
+// @rowsep
+
+.rowsep-0 {
+  border-bottom: 0;
+}
+
+.rowsep-1 {
+  border-bottom: 1px solid;
+}
+
+.entry {
+  &.rotate {
+    writing-mode: vertical-rl;
+  }
+}
+
+// simpletable
+
+.stentry {
+  border-right: 1px solid;
+  border-bottom: 1px solid;
+}
+
+.stentry:last-child {
+  border-right: 0;
+}
+
+.strow:last-child .stentry {
+  border-bottom: 0;
+}
