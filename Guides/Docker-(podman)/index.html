@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>Docker (podman) - Internal Documentation</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Docker (podman)";
+        var mkdocs_page_input_path = "Guides\\Docker-(podman).md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> Internal Documentation
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../about/">About</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">Internal Documentation</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Docker (podman)</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <p>Following are my posts from <a href="https://teams.microsoft.com/l/channel/19%3af688e324fd7548a48d9ccc2efd5db5fb%40thread.tacv2/Containerization%2520and%2520orchestrators?groupId=0d1bbfab-c584-4034-a891-78ccf9de71b4&amp;tenantId=8b493985-e1b4-4b95-ade6-98acafdbdb01">Containerization and orchestrators</a> MS Teams channel. Hopefully they will help you set up Docker/Podman on local.</p>
+<hr />
+<p>So as I've <a href="https://stackoverflow.com/c/wisetechglobal/a/10269/250" title="https://stackoverflow.com/c/wisetechglobal/a/10269/250">shared recently</a> I'm switching to WTG laptop instead of personal PC due to performance reasons.</p>
+<p>And I don't have Docker Desktop on WTG laptop, so I decided to give Podman a try.</p>
+<p>Since I'm using WSL for performance reasons, I will be using Podman in WSL as well, not in Windows.</p>
+<p>As soon as I figured out that we need to install podman from Kubic repository to get the latest version - it was smooth sailing. Just changed docker in my commands to podman and it works.</p>
+<p>A quick guide:</p>
+<ol>
+<li>Follow <a href="https://web.archive.org/web/20240112131221/https://podman.io/docs/installation">instructions</a> (follow the instructions under "If you would prefer newer...") to install podman from Kubic repository (NOT from official repositories) (<strong>important!</strong>, <a href="https://github.com/containers/podman/discussions/15586#discussioncomment-3725602" title="https://github.com/containers/podman/discussions/15586#discussioncomment-3725602">see why</a>)</li>
+<li>Run <code>sudo apt install podman-docker</code> - to get docker=podman alias working even outside of bash (in scripts/tests that is)</li>
+<li>Run <code>docker login -u &lt;username&gt; -p &lt;password&gt; -v docker.io</code> (need to sign up for account on <a href="https://docker.io" title="https://docker.io">docker website</a> and use credentials here )</li>
+<li>Edit <code>/etc/containers/registries.conf</code> and make sure that <code>short-name-mode="permissive"</code> (will need sudo privileges to write changes)</li>
+<li>Replace host.docker.internal with host.containers.internal - if you use it somewhere to reference host machine IP (won't work with podman v3 from official repo, need v4 from Kubic repo, <a href="https://github.com/containers/podman/discussions/15586#discussioncomment-3725602" title="https://github.com/containers/podman/discussions/15586#discussioncomment-3725602">see</a>)</li>
+<li>To run <code>docker-rebuild-and-run.sh</code> locally you might need to update references to <code>%%API_HTTP_HOST%%</code> to a real URL.</li>
+</ol>
+<p><strong>Note for Running Docker.spec tests</strong> - Make sure you run <code>npm ci</code> and <code>npm run build-dev</code> beforehand</p>
+<hr />
+<p>Hi guys,</p>
+<p>When installing podman in Ubuntu, make sure to use Kubic repository (endorsed by podman) because it has the latest version (v4). While the official Ubuntu repository has a way outdated podman v3. (Note: This may no longer be a problem by 25/04/2024 when the new Ubuntu LTS comes out)</p>
+<p>Instructions: <a href="https://podman.io/getting-started/installation#ubuntu">https://podman.io/getting-started/installation#ubuntu</a></p>
+<p>Credits: <a href="https://github.com/containers/podman/discussions/15586#discussioncomment-3725602">https://github.com/containers/podman/discussions/15586#discussioncomment-3725602</a></p>
+<p>Also I've updated the guide above:</p>
+<ul>
+<li>added podman-docker package for setting up the alias</li>
+<li>removed registry config, because v4 comes with all the registries pre-configured</li>
+<li>removed notes about network issues as they are completely resolved by using v4</li>
+</ul>
+<p>Cheers!</p>
+<hr />
+<p>If you ever need <strong>docker-compose</strong> - use https://github.com/containers/podman-compose instead</p>
+              
+            </div>
+          </div><footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

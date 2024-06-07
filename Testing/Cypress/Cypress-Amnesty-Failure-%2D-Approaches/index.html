@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../../../img/favicon.ico" />
+    <title>Pre-req: - Internal Documentation</title>
+    <link rel="stylesheet" href="../../../css/theme.css" />
+    <link rel="stylesheet" href="../../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Pre-req:";
+        var mkdocs_page_input_path = "Testing\\Cypress\\Cypress-Amnesty-Failure-%2D-Approaches.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../../.." class="icon icon-home"> Internal Documentation
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../../about/">About</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../..">Internal Documentation</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../.." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Pre-req:</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="pre-req">Pre-req:</h1>
+<p>Make sure to checkout and understand the definition of Intermittent Failures and Amnesty tests:
+See StackOverflow references below:
+- <a href="https://wisetechglobal.sharepoint.com/sites/StackOverflow/questions/Forms/AllItems.aspx?id=%2Fsites%2FStackOverflow%2Fquestions%2F8794%2Emd&amp;parent=%2Fsites%2FStackOverflow%2Fquestions">What are Intermittent Failures?</a>
+- <a href="https://wisetechglobal.sharepoint.com/sites/StackOverflow/questions/Forms/AllItems.aspx?id=%2Fsites%2FStackOverflow%2Fquestions%2F8787%2Emd&amp;parent=%2Fsites%2FStackOverflow%2Fquestions">Why are test failures shown in grey vs black?</a>
+- <a href="https://wisetechglobal.sharepoint.com/sites/StackOverflow/questions/Forms/AllItems.aspx?id=%2Fsites%2FStackOverflow%2Fquestions%2F103%2Emd&amp;parent=%2Fsites%2FStackOverflow%2Fquestions">What is the difference between an incident, a defect, an issue, and an amnesty?</a></p>
+<h1 id="tldr">TL;DR</h1>
+<blockquote>
+<p>Intermittent Failure is a failure of a test on one DAT test agent, when a subsequent execution of the same test within the same DAT run has passed</p>
+<p>A "confirmed" failure is the test was run on three separate DAT test agents and the test failed all three times.</p>
+<p>An Amnesty is a unit test that has started failing, but no change in the DAT run could be automatically identified as the cause of the failure. This could be due to intermittent failures, time-based failures (e.g. tests that depend upon Daylight Savings), systemic issues (e.g. updates to DAT virtual machines) or any other reason that would cause a test to work for a certain amount of time before it started to fail. </p>
+</blockquote>
+<h1 id="confirmed-failures-on-dat-that-is-caused-by-your-prchanges">"Confirmed" failures on DAT that is caused by your PR/changes:</h1>
+<ul>
+<li>If your DAT run always fail when you submit your changes, and the failed test is related to your changes, then you will have to fix it (or ask for assisting to fix it) within your PR/changes.</li>
+<li>If your changes make Cypress tests failed on DAT, but it still pass on master branch, it can have 2 meanings:</li>
+<li>Your functionality code changes has problems that broke a functionality that is supposed to work</li>
+<li>The code for Cypress test needs to be updated to reflect your changes</li>
+</ul>
+<h1 id="confirmed-failures-on-dat-that-is-not-caused-by-your-prchanges">"Confirmed" failures on DAT that is NOT caused by your PR/changes:</h1>
+<ul>
+<li>Please double check carefully that the "confirmed" failure is NOT caused by your changes.</li>
+<li>If your DAT run fail, but it's really NOT related to your changes, then it is highly likely to be an Amnesty test failure.
+=&gt; You can try submitting for another DAT run (because sometimes DAT env can cause some unexpected issues).</li>
+<li>Any failed DAT run will be recorded, and if a Cypress test fail too many times, DAT will start seeing it as an Amnesty test, and we will have an Amnesty WI to fix it.</li>
+</ul>
+<h1 id="approaches-for-amnesty-test-failure">Approaches for Amnesty test failure</h1>
+<h2 id="fix-it">Fix it :)</h2>
+<ul>
+<li>Please read more about Cypress best practices in their docs to find possible fix</li>
+<li>See also: </li>
+<li>Wiki for <a href="https://devops.wisetechglobal.com/wtg/BorderWise/_wiki/wikis/BorderWise.wiki/3415/Common-errors-amnesties-and-possible-fixes">Common errors, amnesties and possible fixes</a></li>
+<li><a href="https://devops.wisetechglobal.com/wtg/BorderWise/_git/BorderWiseWeb?path=%2FFrontend%2Fsrc&amp;anchor=common-cypress-errors">Common Cypress errors</a> in README.md</li>
+</ul>
+<h3 id="after-finding-the-fix">After finding the fix:</h3>
+<p>When we finish fixing any Cypress Amnesty Failure, there are few cautious approaches that we can take in order to make sure amnesty test actually fixed:
+1. Before starting to fix the test - make sure you can reproduce the failure. Edit script <code>run-tests-until-failure.sh</code> to run the test you're trying to fix and run it until it fails. If it's been running for a while (30 minutes, etc) and still doesn't fail - maybe try to think what could go wrong and try to fail it manually. Like switching in devtools to slower network speed, or adding timeouts/delays for requests, trying to create a race condition, etc.
+1. Try script <code>run-tests-until-failure.sh</code> to re-run a test locally as many times as you want. If the script running your test successfully for an acceptable number of times (at least 5-10 times, but best to leave it running for as long as you can while working on something else, like an hour or so), then most likely the test is fixed.
+1. Try running your fix on DAT for multiple times (like shelf test for 3 times). Be aware that every time we run shelf test on DAT, the test can be run in different machine, so even multiple run on DAT can pass but amnesty test can still come back on another DAT machine.
+1. Try running tests under system load. For example, download <a href="https://wisetechglobal-my.sharepoint.com/:u:/p/maxim_mazurok/ERFHzV9Y89dKonxI6zoXOaUBibburqXjTDunJ83SMNrbmQ?e=FwUrd0">y-cruncher</a> (password "shadow" because it's blocked by IS for no good reason). In there you can run stress-test. You can also change performance mode to something other than "Ultra Performance" in Dell Optimized, and might want to change Windows power mode to "Best power efficiency". The goal is to slow down you PC to be like DAT, as it can be very slow under load. And keep on running <code>run-tests-until-failure.sh</code>.</p>
+<h2 id="skip-amnesty-test-and-fix-later">Skip Amnesty test and fix later:</h2>
+<ul>
+<li>Skipping a test is NOT a recommended way whenever we have a failure.
+Even when amnesty test is NOT caused by your changes, you should try to fix it before thinking of skipping.</li>
+<li>There are some cases that we can have tolerance for skipping Cypress tests:</li>
+<li>Some breaking changes like upgrading Cypress, huge PR, work in progress, etc... </li>
+<li>When a priority WIs require faster merge like defects fixes, etc...</li>
+</ul>
+<p>=&gt; But then, the skipped Cypress tests should be pushed to be fixed immediately.</p>
+<ul>
+<li>See similar SO reference also: <a href="https://wisetechglobal.sharepoint.com/sites/StackOverflow/questions/Forms/AllItems.aspx?id=%2Fsites%2FStackOverflow%2Fquestions%2F10783%2Emd&amp;parent=%2Fsites%2FStackOverflow%2Fquestions">What to do when Cypress e2e test fails intermittently on DAT for BorderWise Web?</a></li>
+</ul>
+<h3 id="important-notes-for-skipping-a-cypress-failure-test">Important notes for skipping a Cypress failure test:</h3>
+<ul>
+<li>If you decide to skip a Cypress test, then when you create WI to fix that test, please include the link of failed DAT run, and also attach the screenshot + log file of that failed Cypress test.</li>
+<li>If you don't include the link, the screenshot and the log file, we can't trace back whatever the issue you have with that test.
+This ends up we enable the test again just to see why it failed. </li>
+<li>If the re-enabled test pass, then we'll never know the real issue.</li>
+<li>
+<p>If the re-enabled test fail, we are never sure that it's the same issue as when you skipped it.</p>
+</li>
+<li>
+<p>Screenshots + logs files stored on DAT artifacts repository will be removed after a period of time.
+=&gt; So please attach them in eDocs when you create the WI to fix the Cypress test.
+=&gt; This will help preserve them permanently for us to trace back.</p>
+</li>
+<li>
+<p>See <a href="https://svc-ediprod.wtg.zone/Services/link/ShowEditForm/WorkItem/4f6964e1-f403-4183-9786-bd5182da34ab?lang=en-gb">WI00632147 - BWW. Fix skipped cypress tests</a> for example: no information at all to find possible fix :cry:</p>
+</li>
+</ul>
+              
+            </div>
+          </div><footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+    
+  </span>
+</div>
+    <script src="../../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../../..";</script>
+    <script src="../../../js/theme_extra.js"></script>
+    <script src="../../../js/theme.js"></script>
+      <script src="../../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

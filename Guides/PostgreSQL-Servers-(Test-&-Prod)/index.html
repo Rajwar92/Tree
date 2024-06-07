@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>Web Watcher - Internal Documentation</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Web Watcher";
+        var mkdocs_page_input_path = "Guides\\PostgreSQL-Servers-(Test-\u0026-Prod).md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> Internal Documentation
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../about/">About</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">Internal Documentation</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Web Watcher</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="web-watcher">Web Watcher</h1>
+<h3 id="common-setup">Common Setup</h3>
+<ol>
+<li>Set up Jumphost</li>
+<li>Follow <a href="https://wisetechglobal.sharepoint.com/Technical%20Support/WiseTech%20Global%20Secure%20Remote%20Access.pdf?CT=1657436790992&amp;OR=Outlook-Body&amp;CID=5DCEAF35-A066-42D4-895D-7F22522B1C44">these instructions</a> to set up Jumphost</li>
+<li>SSH into a server</li>
+<li>We usually use PuTTY to ssh into the different servers through Jumphost. Check with BorderWise team members if they have some shortcuts they're willing to share. </li>
+<li>If you want to set up your own shortcuts:<ol>
+<li>Download the <a href="https://www.putty.org/">PuTTY client</a> (<code>.exe</code>) and place it in a folder</li>
+<li>Create a Windows shortcut with the PuTTY executable as the target in the same folder</li>
+<li>Append <code>-ssh borderwise@&lt;server URL&gt;</code> to the Target. It should look like <code>&lt;path to PuTTY&gt;  -ssh borderwise@&lt;server URL&gt;</code></li>
+<li>Create shortcuts for whichever servers you need to connect to</li>
+<li>Copy the folder with PuTTY and the shortcuts into Jumphost. This can be easily done by selecting the folder and pressing <kbd><code>Ctrl</code></kbd> + <kbd><code>C</code></kbd> followed by <kbd><code>Ctrl</code></kbd> + <kbd><code>V</code></kbd> in Jumphost</li>
+</ol>
+</li>
+<li>When connecting to servers you will be prompted for passwords. Reach out to a BorderWise team member if you need the password for a specific server</li>
+</ol>
+<h2 id="test">Test</h2>
+<p><em>TODO: Verify that these instructions work.</em></p>
+<p><a href="http://tfs.wtg.zone:8080/tfs/CargoWise/BorderWise/_git/content_service_documents?path=%2Fdatabase%2Fpostgresql%2Fbww-testing%2FREADME.md&amp;version=GBmaster&amp;_a=preview">Original documentation</a></p>
+<p>Server: <code>au2wt-sdkr-2.test.wisecloud.zone</code></p>
+<h3 id="server-setup">Server Setup</h3>
+<ol>
+<li><code>host$ docker-compose build</code></li>
+<li><code>host$ docker-compose up -d</code></li>
+<li><code>host$ docker exec -it postgresql_db_1 bash</code></li>
+<li><code>root@container# su - postgres</code></li>
+<li>Change password of postgres db user:</li>
+<li><code>postgres@container# psql</code></li>
+<li><code>postgres=# \password postgres</code>, then type the password<ul>
+<li>You can request the password from a team lead</li>
+<li>Passwords are stored in https://safe.wisetechglobal.com/</li>
+</ul>
+</li>
+<li><code>postgres=# exit</code></li>
+<li>Create the DB user:</li>
+<li><code>postgres@container# createuser -U postgres testing -P</code><ul>
+<li>Creates a new user from the postgres user called 'testing' and prompts for a password.</li>
+<li>Password should match the one in stored in https://safe.wisetechglobal.com/</li>
+</ul>
+</li>
+<li>Create the DB:</li>
+<li><code>createdb -O testing webwatcher_test</code><ul>
+<li>Creates the database 'webwatcher_test' which is owned by the user 'testing'</li>
+</ul>
+</li>
+<li>Open <a href="http://contentservice.wtg.zone:8082/browser/">pgAdmin</a></li>
+<li>Create a new server for Test if it isn't there already and enter the relevant host address, username, and password.
+   <img alt="image.png" src="/.attachments/image-e1942bdc-633c-46e7-b663-188cfeff5589.png" /></li>
+<li>Follow instructions from [https://wisetechglobal.sharepoint.com/sites/StackOverflow/questions/Forms/AllItems.aspx?id=%2Fsites%2FStackOverflow%2Fquestions%2F10763%2Emd&amp;parent=%2Fsites%2FStackOverflow%2Fquestions) to restore data.</li>
+</ol>
+<h2 id="production">Production</h2>
+<p><a href="http://tfs.wtg.zone:8080/tfs/CargoWise/BorderWise/_git/content_service_documents?path=%2Fdatabase%2Fpostgresql%2Fsetup.md&amp;version=GBmaster&amp;_a=preview">Original documentation</a></p>
+<p>Servers:
+- Primary: <code>au2wp-sbps-401.wisecloud.zone</code>
+- Secondary: <code>au2wp-sbps-402.wisecloud.zone</code></p>
+<h3 id="server-setup_1">Server Setup</h3>
+<ul>
+<li>Primary</li>
+<li>Check that there is a 'main' cluster on the server: <code>pg_lsclusters</code><ul>
+<li>If there isn't create a new cluster called 'main' like so: <code>pg_createcluster 14 main</code></li>
+</ul>
+</li>
+<li>Create a new user to be used to replicate the cluster: <code>createuser -U postgres secondary -P --replication</code></li>
+<li>Stop the cluster if it is running: <code>sudo systemctl stop postgresql</code></li>
+<li>Update the config file to enable connections and replication: <code>/etc/postgresql/14/main/postgresql.conf</code><ul>
+<li>Set <code>listen_addresses = '*'</code></li>
+<li>Set <code>wal_level = replica</code></li>
+</ul>
+</li>
+<li>Update the authentication config file to allow connections <code>/etc/postgresql/14/main/pg_hba.conf</code>. Add the following lines to the end of the file:<ul>
+<li><code>host    replication all     10.2.88.44/32   md5</code> (To allow replication from the secondary server)</li>
+<li><code>host    webwatcher  webwatcher  10.61.198.26/32 md5</code> (To allow pgAdmin to connect to the webwatcher database as the webwatcher user)</li>
+<li><code>host    webwatcher  webwatcher  10.2.67.111/32  md5</code> (To allow WebWatcher BE to connect to the webwatcher database as the webwatcher user)</li>
+<li><code>host    webwatcher  webwatcher  10.2.67.112/32  md5</code> (To allow WebWatcher BE to connect to the webwatcher database as the webwatcher user)</li>
+</ul>
+</li>
+<li>Start the cluster: <code>sudo systemctl start postgresql</code></li>
+<li>Check that it is running: <code>pg_lsclusters</code></li>
+<li>Open <a href="http://contentservice.wtg.zone:8082/browser/">pgAdmin</a></li>
+<li>Create a new server for Prod if it isn't there already and enter the relevant host address, username, and password.
+     <img alt="image.png" src="/.attachments/image-e1942bdc-633c-46e7-b663-188cfeff5589.png" /></li>
+<li>Follow instructions from <a href="https://wisetechglobal.sharepoint.com/sites/StackOverflow/questions/Forms/AllItems.aspx?id=%2Fsites%2FStackOverflow%2Fquestions%2F10763%2Emd&amp;parent=%2Fsites%2FStackOverflow%2Fquestions">this Stack Overflow post</a> to restore data.</li>
+<li>Secondary</li>
+<li>Generate an SSH key: <code>ssh-keygen -t ed25519</code> <em>(Not sure if this is necessary)</em></li>
+<li>Copy the generated <code>~/.ssh/id_ed25519.pub</code> to the primary server's postgres user's home. Save it as <code>~/.ssh/authorized_keys</code> <em>(Not sure if this is necessary)</em></li>
+<li>Connect from the secondary server to the primary server and confirm the server ssh fingerprint: <em>(Not sure if this is necessary)</em><ol>
+<li>On secondary: <code>ssh postgres@&lt;primary IP&gt;</code></li>
+<li>On primary: <code>ssh postgres@localhost</code></li>
+<li>Confirm that the ssh fingerprint for both are the same</li>
+<li>Complete the connection from the secondary server to the primary to save the fingerprint</li>
+</ol>
+</li>
+<li>Sign in as the <code>postgres</code>: <code>su postgres</code><ul>
+<li>The password should be the same as the server password</li>
+</ul>
+</li>
+<li>Check that there is a 'main' cluster on the server: <code>pg_lsclusters</code><ul>
+<li>If there isn't create a new cluster called 'main' like so: <code>pg_createcluster 14 main</code></li>
+</ul>
+</li>
+<li>Stop the cluster if it is running:<ul>
+<li>Log out of the postgres user: <code>exit</code></li>
+<li>Stop the cluster: <code>sudo systemctl stop postgresql</code></li>
+</ul>
+</li>
+<li>Sign in as the <code>postgres</code> again: <code>su postgres</code></li>
+<li>Remove all of the files in the data directory: <code>rm -rv /var/lib/postgresql/14/main/</code></li>
+<li>Start replicating from the primary server: <code>pg_basebackup -h 10.2.88.43 -U secondary -X stream -C -S &lt;replica slot name&gt; -v -R -W -D /var/lib/postgresql/14/main/</code><ul>
+<li><code>-h</code>: Host, the IP address of the primary server</li>
+<li><code>-U</code>: Replication user, the user <code>secondary</code> which we created on the primary server</li>
+<li><code>-X</code>: Stream value tells <code>pg_basebackup</code> to stream from the primary server</li>
+<li><code>-C</code>: Creates a replication slot</li>
+<li><code>-S</code>: Names the replication slot, this can be called anything. <code>replica_1</code> for example.</li>
+<li><code>-v</code>: Prints verbose output of the process</li>
+<li><code>-R</code>: Instructs server to operate as standby server for the primary server</li>
+<li><code>-W</code>: Prompts to provide password for the replication user <code>secondary</code></li>
+<li><code>-D</code>: The directory for the backed up files</li>
+</ul>
+</li>
+<li>Log out of the postgres user: <code>exit</code></li>
+<li>Start the cluster: <code>sudo systemctl start postgresql</code></li>
+<li>Verify that the primary server is streaming to the secondary server. On the primary server:<ol>
+<li>Open the postgres command line interface as the postgres user: <code>sudo -u postgres psql</code></li>
+<li>Enter and run the query <code>SELECT client_addr, state FROM pg_stat_replication;</code></li>
+<li>There should be one row with the IP address of the secondary server and state as <code>streaming</code></li>
+</ol>
+</li>
+<li>Verify that the secondary server is mirroring the data in the primary server. On the secondary server:<ol>
+<li>Open the postgres command line interface as the postgres user: <code>sudo -u postgres psql</code></li>
+<li>Run some queries on the database and see if the output matches the same queries on the primary server.</li>
+<li>Alternatively: run queries through <a href="http://contentservice.wtg.zone:8082/browser/">pgAdmin</a>.</li>
+</ol>
+</li>
+<li>
+<p>Setup regular backups on the secondary server:</p>
+<ol>
+<li>Sign in as the <code>postgres</code>: <code>su postgres</code></li>
+<li>Copy the backup scripts to the home directory of the postgres user <code>/var/lib/postgresql/</code><ul>
+<li><a href="https://devops.wisetechglobal.com/wtg/BorderWise/_wiki/wikis/BorderWise.wiki/4243/Backup-Scripts?anchor=dump_backup.sh">dump_backup.sh</a> (<a href="http://tfs.wtg.zone:8080/tfs/CargoWise/BorderWise/_git/content_service_documents?path=%2Fdatabase%2Fpostgresql%2Fscripts%2Fdump_backup.sh&amp;version=GBmaster">Original source</a>)</li>
+<li><a href="https://devops.wisetechglobal.com/wtg/BorderWise/_wiki/wikis/BorderWise.wiki/4243/Backup-Scripts?anchor=invoke_backup_cleaner.sh">invoke_backup_cleaner.sh</a> (<a href="http://tfs.wtg.zone:8080/tfs/CargoWise/BorderWise/_git/content_service_documents?path=%2Fdatabase%2Fpostgresql%2Fscripts%2Finvoke_backup_cleaner.sh&amp;version=GBmaster">Original source</a>)</li>
+<li><a href="https://devops.wisetechglobal.com/wtg/BorderWise/_wiki/wikis/BorderWise.wiki/4243/Backup-Scripts?anchor=backup_cleaner.py">backup_cleaner.py</a> (<a href="http://tfs.wtg.zone:8080/tfs/CargoWise/BorderWise/_git/content_service?path=%2Fcs%2Fscripts%2Fbackup_cleaner.py&amp;version=GBmaster">Original source</a>)</li>
+</ul>
+</li>
+<li>Create a <code>dumps</code> directory <code>/var/lib/postgresql/dumps/</code></li>
+<li>Make sure that the scripts have executable rights and the <code>dumps</code> directory has writable rights</li>
+<li>
+<p>Set up cron jobs: <code>crontab -e</code></p>
+<p>```</p>
+<h1 id="m-h-dom-mon-dow-command">m  h    dom mon dow   command</h1>
+<p>0    */3  *   *   *     /var/lib/postgresql/dump_backup.sh
+0    2    *   *   *     /var/lib/postgresql/invoke_backup_cleaner.sh
+<code>``
+- Runs</code>dump_backup.sh<code>every 3 hours
+- Runs</code>invoke_backup_cleaner.sh` every day on the second hour of the day</p>
+</li>
+</ol>
+</li>
+<li>
+<p><a href="https://www.cherryservers.com/blog/how-to-set-up-postgresql-database-replication">Replication instruction inspired by this</a></p>
+</li>
+</ul>
+<h3 id="recover-from-backup">Recover From Backup</h3>
+<ol>
+<li>Copy most recent backup zip to the data directory of the cluster you want to recover</li>
+<li>Backup zips are stored on the secondary server at <code>/var/lib/postgresql/dumps/</code></li>
+<li>Extract it using <code>tar -xvf &lt;backup&gt;.tar.gz</code></li>
+<li>Move the extracted contents up into the data directory: <code>mv &lt;backup&gt;/* &lt;data directory&gt;</code></li>
+<li>This should give an error for some sub-directories which cannot be overridden since they have existing files in them</li>
+<li>Empty the failed directories in the data directory: <code>rm -r &lt;failed directory&gt;/*</code></li>
+<li>Run the move command again: <code>`mv &lt;backup&gt;/* &lt;data directory&gt;</code></li>
+<li>Remove <code>standby.signal</code> if it is in the data directory</li>
+<li>Start the cluster</li>
+</ol>
+<h3 id="steps-if-primary-goes-down">Steps if Primary Goes Down</h3>
+<ol>
+<li>Update the connection strings in WebWatcher BE to point to the secondary server</li>
+<li>Update both <code>Backend/src/WebApi/publish.appsettings.Production.json</code> and <code>Backend/src/Scheduler/publish.appsettings.Production.json</code></li>
+<li>On the secondary server:</li>
+<li>Stop the cluster if it is running: <code>sudo systemctl stop postgresql</code></li>
+<li>Update the config file to enable connections if it hasn't been already: <code>/etc/postgresql/14/main/postgresql.conf</code><ul>
+<li>Set <code>listen_addresses = '*'</code></li>
+</ul>
+</li>
+<li>Update the authentication config file to allow connections if it hasn't been already <code>/etc/postgresql/14/main/pg_hba.conf</code>. Add the following lines to the end of the file:<ul>
+<li><code>host   webwatcher  webwatcher  10.2.67.111/32  md5</code> (To allow WebWatcher BE to connect to the webwatcher database as the webwatcher user)</li>
+<li><code>host   webwatcher  webwatcher  10.2.67.112/32  md5</code> (To allow WebWatcher BE to connect to the webwatcher database as the webwatcher user)</li>
+</ul>
+</li>
+<li>Start the cluster: <code>sudo systemctl start postgresql</code></li>
+<li>Sign in as the <code>postgres</code> again: <code>su postgres</code></li>
+<li>Promote the cluster to no longer run in standby mode: <code>pg_ctlcluster 14 main promote</code><ul>
+<li>If this is not done the cluster will be read-only</li>
+</ul>
+</li>
+<li>Deploy the updated connection strings to WebWatcher production</li>
+<li>Fix the primary server and restore its database</li>
+<li>Can use a backup from <code>/var/lib/postgresql/dumps/</code> on the secondary server or from somewhere else</li>
+<li>Revert the changes to the connection string in WebWatcher BE so that they point back to the primary server</li>
+<li>Deploy the reverted connection strings</li>
+<li>Set up replication on the secondary server again following the instructions from above</li>
+</ol>
+<h3 id="password-rotation">Password rotation</h3>
+<p>Generate a new password.
+1. Generate new password using the password generator on https://safe.wisetechglobal.com [Use the WTG_SVC_Account settings]
+2. Update the password on https://safe.wisetechglobal.com
+3. Encrypt the password for use on DAT by running the following command in Powershell
+  - <code>$plaintext = (Read-Host -Prompt "Enter text to encrypt"); $plaintextBytes = [System.Text.Encoding]::UTF8.GetBytes($plaintext); $crypto = [System.Security.Cryptography.RSACryptoServiceProvider]::new(); try { $crypto.FromXmlString("&lt;RSAKeyValue&gt;&lt;Modulus&gt;uJFr8lEdDZ6fUXQTiwKRVMrhS7t4oR6/eCuajCQARwIjO3v46HPefEgyMFC6uxGyQg+S7n4xAIfN5a4Ax5yimn5XQNamxgNRQpBQ5mcrGx7r/vRfLqUtt54N4pgwq77arJEMJDEtU+B3wjF+5bMUE1gHmc3Cs5XzGwWbFLHMmWk=&lt;/Modulus&gt;&lt;Exponent&gt;AQAB&lt;/Exponent&gt;&lt;/RSAKeyValue&gt;"); $encrypted = $crypto.Encrypt($plaintextBytes, $true); Write-Host ([Convert]::ToBase64String($encrypted)) } finally { $crypto.Dispose() }</code>
+  - See this article on <a href="https://wisetechglobal.sharepoint.com/sites/StackOverflow/questions/Forms/AllItems.aspx?id=%2Fsites%2FStackOverflow%2Fquestions%2F2929%2Emd&amp;parent=%2Fsites%2FStackOverflow%2Fquestions">StackOverflow</a> for more detail</p>
+<ol>
+<li>Update WebWatcher\Deployment\Deployment\WebWatcherConfigFileUpdater.cs with the new plaintext encrypted password generated in step 2</li>
+<li>After CH0 finished</li>
+<li>Update postgresql server password</li>
+<li>Restart postgresql process</li>
+<li>Deploy new build on Crikey</li>
+</ol>
+              
+            </div>
+          </div><footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

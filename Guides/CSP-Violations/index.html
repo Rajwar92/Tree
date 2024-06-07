@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>Getting Started - Internal Documentation</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Getting Started";
+        var mkdocs_page_input_path = "Guides\\CSP-Violations.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> Internal Documentation
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../about/">About</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">Internal Documentation</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Getting Started</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="getting-started">Getting Started</h1>
+<ol>
+<li>Use <a href="https://devops.wisetechglobal.com/wtg/BorderWise/_git/DevTools?version=GBMMZ%2Fcsp&amp;path=%2Ftools%2Fcsp-reports-analyzer">csp-reports-analyzer</a> to find new issues, aggregate them, group, etc. Github Copilot helps a lot.</li>
+<li>Check out <a href="#known-issues">Known issues</a></li>
+</ol>
+<p><strong>Pro Tip</strong>: for checking all the content for 3rd party images of base64 data usage, you can use <a href="https://devops.wisetechglobal.com/wtg/BorderWise/_git/DevTools?version=GBMMZ%2Fcsp&amp;path=%2Ftools%2Fmongo-html-checker">mongo-html-checker</a></p>
+<h1 id="known-issues">Known issues</h1>
+<p>Note, that this is an exert from Maxim Mazurok's Obsidian, so internal links might not work, but should be good enough</p>
+<ul>
+<li>Images from <code>wcotradetools.org</code> - fixed by manual team<ul>
+<li>[x] Double check all other content for <code>src="h...</code>, etc.</li>
+<li>Examples:<ul>
+<li>https://www.wcotradetools.org/sites/default/files/nomenclature/inline-images/explanatory-notes/0629_2942_en_2017_fichiers/image001.png</li>
+<li>https://www.wcotradetools.org/sites/default/files/nomenclature/inline-images/explanatory-notes/0629_2942_en_2017_fichiers/image138.png</li>
+<li>https://www.wcotradetools.org/s3/global/wco/hsnotes/2022/images/explanatory-notes/0629_2942_en_2017_fichiers/image138.png</li>
+<li>https://www.wcotradetools.org/sites/default/files/nomenclature/inline-images/explanatory-notes/0629_2925_en_2017_fichiers/image001.gif</li>
+<li>https://www.wcotradetools.org/sites/default/files/nomenclature/inline-images/explanatory-notes/0739_3905_en_2017_fichiers/image001.gif</li>
+<li>https://www.wcotradetools.org/sites/default/files/nomenclature/inline-images/explanatory-notes/0629_2924_en_2017_fichiers/image001.gif</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code>fonts.gstatic.cn</code> - legit Google fonts for China, allowed<ul>
+<li>Examples:<ul>
+<li>https://fonts.gstatic.cn/s/roboto/v30/KFOkCnqEu92Fr1Mu51xIIzIXKMny.woff2</li>
+<li>https://fonts.gstatic.cn/s/roboto/v30/KFOlCnqEu92Fr1MmYUtfChc4AMP6lbBP.woff2</li>
+<li>https://fonts.gstatic.cn/s/roboto/v30/KFOlCnqEu92Fr1MmSU5fABc4AMP6lbBP.woff2</li>
+<li>etc.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code>collinsdictionary.com</code> - looks like some plugin used for translations/definitions?<ul>
+<li>Examples:<ul>
+<li>https://www.collinsdictionary.com/external/images/info.png?version=5.0.34</li>
+<li>https://www.collinsdictionary.com/external/images/info.png?version=5.0.35</li>
+<li>https://www.collinsdictionary.com/external/images/info.png?version=5.0.37</li>
+<li>https://www.collinsdictionary.com/external/images/lbcefrb/a2.png?version=5.0.35</li>
+<li>https://www.collinsdictionary.com/external/images/lbcefrb/b1plus.png?version=5.0.34</li>
+<li>https://www.collinsdictionary.com/external/images/lbcefrb/b2.png?version=5.0.35</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Already allowed, weird:<ul>
+<li>`sentry.io<ul>
+<li>Examples:<ul>
+<li>https://o827986.ingest.sentry.io/api/5818829/envelope/?sentry_key=dfc9b7af16364687a712017b52545d52&amp;sentry_version=7</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code>hotjar.io</code><ul>
+<li>Examples:<ul>
+<li>https://metrics.hotjar.io/?v=6</li>
+<li>https://static.hotjar.com/c/hotjar-3657851.js?sv=6</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code>borderwise.com</code><ul>
+<li>Examples:<ul>
+<li>https://app.borderwise.com/api/error-report/frontend-issue</li>
+<li>https://app.borderwise.com/api/host/version</li>
+<li>https://app.borderwise.com/api/v1/library/au/tariff-tabs?heading=9404&amp;tariffType=IMP&amp;year=2022</li>
+<li>https://app.borderwise.com/api/v1/library/books/61a856726b37123a14272d2a/timestamp</li>
+<li>https://app.borderwise.com/api/v1/user/license/status/5b40bb5553d34c027765d6140529725b/</li>
+<li>https://app.borderwise.com/api/v1/user/search-history</li>
+<li>https://app.borderwise.com/app/templates/common/generic-tariff-tabs-container.html?v=1702526785863</li>
+<li>https://app.borderwise.com/assets/css/style.hsnotes.min.6801e23b.css</li>
+<li>https://app.borderwise.com/manifest.webmanifest</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code>googletagmanager.com</code> - no idea ;(<ul>
+<li>Theory was: if it's blocked using redirect to non-whitelisted domain it will trigger CSP, but it is probably wrong theory because final destination URL will be reported, not the original one</li>
+<li>Example: https://www.googletagmanager.com/gtag/js?id=G-EVQQLXSL5E</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code>cs.hae123.cn</code> - might be extension, users likely not affected<ul>
+<li>From <code>fatkun-pro-mv</code> in URL I found <a href="https://chromewebstore.google.com/detail/efcapamiilmdfbbilogcddbdckjhpajj">Fatkun Batch Download Image</a> Chrome extension, seems pretty legit and couldn't reproduce the issue</li>
+<li>Only happened on login page, might be some bots...</li>
+<li>Examples:<ul>
+<li>https://cs.hae123.cn/gw?name=fatkun-pro-mv3&amp;uid=7da14c81d7284d9e84cc898b70bf214e</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code>baidu.com</code> - likely ads from malware<ul>
+<li>Params from URL: "con<strong>wid</strong>=240&amp;con<strong>hei</strong>=350" suggest it's width and height of the ad?</li>
+<li>See <a href="https://any.run/report/11a5f0657fb8c59ffae17c0911d0d3a3c3f7fe719485edfdd8bfedf777c9f7ed/cc35831f-b102-4391-ae1d-e0814b16ab91#i-table-processes-79421450-9951-4011-8fdb-26a08d8304e1">malware verdict</a> for the same URL as we see in logs</li>
+<li>Examples:<ul>
+<li>https://pos.baidu.com/dcsm?conwid=240&amp;conhei=350&amp;rdid=6818871&amp;dc=3&amp;di=u6818871&amp;s1=2839721755&amp;dtm=HTML_POST</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code>alicdn.com</code> - reliability monitoring, <strong>could affect user experience in CN</strong><ul>
+<li>Seems like it detects blank/white pages, most likely part of Alibaba Cloud performance/reliability monitoring. Potentially might be used to report/fix pages with resources unavailable in China? I guess we don't really need it</li>
+<li>Example: <code>https://g.alicdn.com/woodpeckerx/itrace-next/??itrace-blank.iife.js</code></li>
+</ul>
+</li>
+<li><code>login.microsoftonline.com</code> - because Sentry is blocked<ul>
+<li>I guess it's most likely related to sentry domain being blocked by security</li>
+<li>Looks like a legit login for <a href="https://www.tollgroup.com/">Toll Group</a> based on background image</li>
+<li>[[Dmitry Kislov]] said "we don’t have SSO redirects yet but will soon have for WTG users"</li>
+<li>Once url-decoded, <code>SAMLRequest</code> part can be decoded using https://www.samltool.com/decode.php, looks like this:
+    <code>xml
+    &lt;?xml version="1.0"?&gt;
+    &lt;AuthnRequest xmlns="urn:oasis:names:tc:SAML:2.0:protocol" Version="2.0"
+        ID="_913cf84de6779bcba0ff358c3aef9514f893a8f069862e2714b2b2bcf3d2f947"
+        IssueInstant="2023-12-14T22:00:59Z"&gt;
+        &lt;Issuer xmlns="urn:oasis:names:tc:SAML:2.0:assertion"&gt;
+            https://saml.threatpulse.net:8443/saml/saml_realm&lt;/Issuer&gt;
+    &lt;/AuthnRequest&gt;</code></li>
+<li><code>RelayState</code> is base64 encoded <code>ocs=https://o827986.ingest.sentry.io/api/5818829/envelope/?sentry_key=dfc9b7af16364687a712017b52545d52&amp;sentry_version=7,</code> in all examples</li>
+<li>Examples:<ul>
+<li>https://login.microsoftonline.com/0f004b2e-fb07-45e7-a568-caf4905b0339/saml2?SAMLRequest=jZA7a8QwEIT7%2BxVG%2Fdl6%2BSFh%2BzhIc5A0SUiR5pB1K3xgy45WDvn5EQ6BlGFhi53h22Ha09c8ZZ8Q8L74jrCcklN%2FaM9bHP0zfGyAMUsOjx3ZgteLwTtqb2ZAHa1%2BOT89ap5TvYYlLnaZSPb2i0pnkl0eOnJVTFjXyBtUda0GOxjqnCgbKww4VTLpGiVM42ilmooDr5kceBrrxI07JeuEQdzg4jEaHxOZcnFk%2FMjkK%2BeaUl2qd9K3uyn8J61BhBBTStKPMa6oiwLNPOVxDGDiuk0IuYeoGynFruzrmsRpboufP31b%2FC2pP3wD&amp;RelayState=b2NzPWh0dHBzOi8vbzgyNzk4Ni5pbmdlc3Quc2VudHJ5LmlvL2FwaS81ODE4ODI5L2VudmVsb3BlLz9zZW50cnlfa2V5PWRmYzliN2FmMTYzNjQ2ODdhNzEyMDE3YjUyNTQ1ZDUyJnNlbnRyeV92ZXJzaW9uPTcs</li>
+<li>https://login.microsoftonline.com/0f004b2e-fb07-45e7-a568-caf4905b0339/saml2?SAMLRequest=jZAxa8MwEIX3%2FAqjPbYky7YsbIdAlkC7tKVDl6BIMg7YsqM7h%2F78qi6Fjl0O7t7ju8drDp%2FTmDxcgNvsW8JSSg7drjmuOPgXd18dYBIdHlqyBq9mDTdQXk8OFBr1enx%2BUjylagkzzmYeSfL%2Bi4pnkpxPLbkYlltbWylkrjXrWW8LV0lem8rUvCzjJqkRheivdV0wKazk1ljj7LUqaSW%2BMQCrO3tA7TGSKc%2F3jO85e%2BNMFVxR9kG6ZjOF%2F6TVAC5gTEm6AXEBlWWgpzHFITiNyzqCS71DJYXIN2UblyiOU5P9%2FOma7G9J3e4L&amp;RelayState=b2NzPWh0dHBzOi8vbzgyNzk4Ni5pbmdlc3Quc2VudHJ5LmlvL2FwaS81ODE4ODI5L2VudmVsb3BlLz9zZW50cnlfa2V5PWRmYzliN2FmMTYzNjQ2ODdhNzEyMDE3YjUyNTQ1ZDUyJnNlbnRyeV92ZXJzaW9uPTcs</li>
+<li>https://login.microsoftonline.com/0f004b2e-fb07-45e7-a568-caf4905b0339/saml2?SAMLRequest=jZAxa8MwFIT3%2FAqjPbYky0okbIdAl0C6tKVDlyDLEg7Ysqv3HPrzK1wKHbvc8O747nj16Wsas4eLcJ9DQ1hOyand1ecVh%2FDiPlcHmKVEgIasMejZwB10MJMDjVa%2Fnp%2BvmudUL3HG2c4jyd5%2FUelMsstTQ27CW6G6ikmpjKS%2Bkp0yJRPG%2BL7nvKdcdlIpJaQtbcl6dvDMV4Iy6QU9uAQBWN0lAJqAiUt5uWd8z49vnGmhNBMfpK23UPzPVgPgIqaNpB0QF9BFAWYacxyiM7isI7g8ONRHIcrN2eSWzHGqi5%2Beti7%2BvqjdfQM%3D&amp;RelayState=b2NzPWh0dHBzOi8vbzgyNzk4Ni5pbmdlc3Quc2VudHJ5LmlvL2FwaS81ODE4ODI5L2VudmVsb3BlLz9zZW50cnlfa2V5PWRmYzliN2FmMTYzNjQ2ODdhNzEyMDE3YjUyNTQ1ZDUyJnNlbnRyeV92ZXJzaW9uPTcs</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code>trendmicro.com</code> - <a href="https://pwm.trendmicro.com/">Trend Micro's Password Manager</a> - <strong>could affect user experience</strong><ul>
+<li>Examples:<ul>
+<li>https://pwm-image.trendmicro.com</li>
+<li>https://pwm-image.trendmicro.com/5.8/extensionFrame/styles/engineV3.css</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code>effirst.com</code> - mobile apps monitoring platform in CN<ul>
+<li>Alibaba mobile applications monitoring platform, happened once on login, users likely not affected</li>
+<li>Examples:<ul>
+<li>https://px.effirst.com/api/v1/jssdk/upload?wpk-header=app%3D9zxuc2j4-4ogpwyg4%26cp%3Dnone%26de%3D4%26seq%3D1702623996903%26tm%3D1702623996%26ud%3Dc4a9cfcc-782c-4420-92af-c774019af6ba%26ver%3D%26type%3Dflow%26sver%3D2.3.4%26sign%3D9bf8a190ef82c5049df7b199c599c45b&amp;uc_param_str=prveosfrnwutmisv&amp;data=%7B%22uid%22%3A%22%22%2C%22wid%22%3A%22c4a9cfcc-782c-4420-92af-c774019af6ba%22%2C%22type%22%3A%22flow%22%2C%22category%22%3A5%2C%22w_cnt%22%3A1%2C%22w_rel%22%3A%22%22%2C%22w_bid%22%3A%229zxuc2j4-4ogpwyg4%22%2C%22w_cid%22%3A%22%22%2C%22w_spa%22%3Afalse%2C%22w_frmid%22%3A%2272c6aa58-8eb2-45e2-2e68-f3244f481c3d%22%2C%22w_tm%22%3A1702623996897%2C%22log_src%22%3A%22jssdk%22%2C%22sdk_ver%22%3A%222.3.4%22%2C%22w_url%22%3A%22https%3A%2F%2Fapp.borderwise.com%2Faccount%2Flogin%22%2C%22w_query%22%3A%22%22%2C%22w_ref%22%3A%22%22%2C%22w_title%22%3A%22BorderWise%22%2C%22ua%22%3A%22Mozilla%2F5.0%20(iPhone%3B%20CPU%20iPhone%20OS%2017_0_3%20like%20Mac%20OS%20X%3B%20zh-cn)%20AppleWebKit%2F601.1.46%20(KHTML%2C%20like%20Gecko)%20Mobile%2F21A360%20Quark%2F6.7.7.1942%20Mobile%22%2C%22referrer%22%3A%22https%3A%2F%2Fapp.borderwise.com%2F%22%2C%22dsp_dpi%22%3A3%2C%22dsp_w%22%3A393%2C%22dsp_h%22%3A852%2C%22net%22%3A%22%22%2C%22w_send_mode%22%3A%22img%22%7D</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code>tql.com</code> - most likely some Truckload corporate extension...<ul>
+<li>Resources are likely from tql.com intranet</li>
+<li>Examples:<ul>
+<li>https://svcs.tql.com/CrossReferenceContent/libraries/bootstrap/fonts/glyphicons-halflings-regular.ttf</li>
+<li>https://svcs.tql.com/CrossReferenceContent/libraries/bootstrap/fonts/glyphicons-halflings-regular.woff</li>
+<li>https://svcs.tql.com/CrossReferenceContent/libraries/bootstrap/fonts/glyphicons-halflings-regular.woff2</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code>data</code> <ul>
+<li>Login and app pages, including with <code>authtoken</code> param</li>
+<li>Violated directives:<ul>
+<li><code>font-src</code> - we don't load fonts using data, none of the content does it either</li>
+<li><code>media-src</code> - only for <code>&lt;audio&gt;</code> and <code>&lt;video&gt;</code> which we don't use, I checked</li>
+</ul>
+</li>
+<li>Source files:<ul>
+<li><code>googletagmanager.com/gtag/js</code> - only <code>font-src</code> violated, kinda weird, it doesn't show anything, likely some proxy error response</li>
+<li>Empty - violates both <code>font-src</code> and <code>media-src</code>; Empty source means inline stuff or eval</li>
+</ul>
+</li>
+<li>Checked all content for all possibilities of data, didn't find anything, so it all must be coming from unknown 3rd party sources like extensions, etc.</li>
+<li>[x] Finish checking all fields recursively (for direct books, etc.) for known issues<ul>
+<li>[x] src="http...</li>
+<li>[x] src="???</li>
+<li>[x] audio/video/track</li>
+<li>[x] <code>data:font</code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+              
+            </div>
+          </div><footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

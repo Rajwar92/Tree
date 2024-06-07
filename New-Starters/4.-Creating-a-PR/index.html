@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>4. Creating a PR - Internal Documentation</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "4. Creating a PR";
+        var mkdocs_page_input_path = "New-Starters\\4.-Creating-a-PR.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> Internal Documentation
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../about/">About</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">Internal Documentation</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">4. Creating a PR</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <p>[[<em>TOC</em>]]</p>
+<h2 id="branch-names">Branch names</h2>
+<p>Please include WI number and summary in the branch name: <code>${Link-from-ediProd}</code>
+If there are multiple coding workflows - include the workflow name as well: <code>${Link-from-ediProd} - {Workflow-Description}</code></p>
+<ol>
+<li>Copy WI link from ediProd: Actions -&gt; Copy Hyperlink to Clipboard (<code>Ctrl + H</code>)</li>
+<li>Create a new branch in VS Code: <code>Ctrl + Shift + P</code> -&gt; <code>Git: Create Branch...</code></li>
+<li>Enter your staff code and <code>/</code>, like so: <code>MMZ/</code></li>
+<li>Paste what you copied from ediProd</li>
+<li>VS Code will automatically replace spaces with <code>-</code></li>
+<li>(if working on multiple coding workflows) add <code>-</code> and paster workflow name as well</li>
+</ol>
+<p>The benefit is that we can more easily switch between branches without having to remember WI numbers and using keywords instead.</p>
+<p>For example:
+- Staff code: <code>MMZ</code>
+- WI number: <code>WI00525665</code>
+- WI summary: <code>WW. Generic API support</code>
+- Workflow Description: <code>Dev - Field Child Components</code>
+- Branch name entered in VS Code: <code>MMZ/WI00525665 - WW. Generic API support - Dev - Field Child Components</code>
+- Branch name after auto-conversion: <code>MMZ/WI00525665---WW.-Generic-API-support---Dev---Field-Child-Components</code></p>
+<h2 id="pr-name">PR Name</h2>
+<p>Same as for branches, make sure it includes the WI number and summary: <code>${Link from ediProd}</code>
+Include Workflow Description if there are multiple coding workflows: <code>${Link from ediProd} - {Workflow Description}</code></p>
+<p>For example:
+- WI number: <code>WI00525665</code>
+- WI summary: <code>WW. Generic API support</code>
+- Workflow Description: <code>Dev - Field Child Components</code>
+- PR Name: <code>WI00525665 - WW. Generic API support - Dev - Field Child Components</code></p>
+<h2 id="draft-pr">Draft PR</h2>
+<p>To keep PRs list nice and tidy, as well as to protect from accidental merges, unless your PR is ready for reviews, create it as a Draft:
+<img alt="image.png" src="/.attachments/image-72e7b78e-48ad-4d8a-a22c-cb7480ad18a6.png" /></p>
+<p>If you already created PR and want to convert it to a draft:</p>
+<p><img alt="image.png" src="/.attachments/image-bef9507f-fb30-42fc-a2e3-85cef0fbf562.png" /></p>
+<p>Then once it's ready:</p>
+<p><img alt="image.png" src="/.attachments/image-d577aedb-5388-43b6-ae30-d6a18d4c3ef4.png" /></p>
+<h2 id="resolving-conflicts">Resolving conflicts</h2>
+<p>See <a href="https://wisetechglobal.sharepoint.com/sites/StackOverflow/questions/Forms/AllItems.aspx?id=%2Fsites%2FStackOverflow%2Fquestions%2F10704%2Emd&amp;parent=%2Fsites%2FStackOverflow%2Fquestions">this guide</a> on how to resolve conflicts in VS Code for FE changes.</p>
+              
+            </div>
+          </div><footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

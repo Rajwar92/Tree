@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>Testing with MSW in WW - Internal Documentation</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Testing with MSW in WW";
+        var mkdocs_page_input_path = "Testing\\Testing-with-MSW-in-WW.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> Internal Documentation
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../about/">About</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">Internal Documentation</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Testing with MSW in WW</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <p>Our Mock Service Worker (MSW) handlers in WebWatcher (WW) use a state of mock data (which can be found in <code>mockData.ts</code>) to simulate how our requests work in the real world. </p>
+<p>This state provides enough data to ensure the majority of components behave seamlessly in our tests without having to tinker with them too much. </p>
+<p>The benefit of this is that it removes the need to setup detailed mock data and routes for each separate test, meaning we're only required to make small changes to test data relevant for the functionality we're testing in a given test.</p>
+<h1 id="when-should-i-modify-handlersts">When Should I Modify Handlers.ts?</h1>
+<p>The routes defined in <code>handlers.ts</code> should be routes that are relevant to a variety of different tests. Generally, these routes return all the data associated with the default library item we use in a lot of our tests.</p>
+<p>These routes should return values from the state so that if/when we change values during our tests (or our handlers), these data changes are reflected across all our mock routes (e.g. our schedule now endpoint should update a schedule's last check property).</p>
+<p>As an example, these routes return monitoring requests in the default collection and schedule info for the default monitoring request used in our test files:</p>
+<p><img alt="image.png" src="/.attachments/image-35de5127-046b-4586-9f86-12acb66dd6ac.png" /></p>
+<h1 id="what-if-i-want-to-test-something-a-bit-more-specific">What If I Want to Test Something a Bit More Specific?</h1>
+<h2 id="modify-the-state-during-your-test">Modify the State During Your Test</h2>
+<p>If you want to test something that only requires a small change to existing data, you should modify the state.</p>
+<p>An example of this could be modifying the default monitoring request's extraction type from "Custom" to "Web", which we might want to do when testing our <code>ConfigurationForm</code> component.</p>
+<p>Changes made to the state are all reset before each test in our <code>setupTests.ts</code> file, so we don't have to worry about possibly breaking other tests.</p>
+<p><img alt="image.png" src="/.attachments/image-bf13df5f-3e29-4e9d-b5c3-cb914f6174dd.png" /></p>
+<h2 id="setup-separate-handler-inside-of-a-test">Setup Separate Handler Inside of a Test</h2>
+<p>In some cases there may be mock request routes that are only relevant to a specific test. Or maybe we don't care about a request response and only want to confirm that a request was sent (e.g. when a form is submitted).</p>
+<p>In these cases we can call <code>server.use()</code> within our test to setup our custom route, which will prepend our request handler to the current MSW server instance to ensure it matches before any other existing handler.</p>
+<p>An example of this can be seen in <code>LoginForm.spec.ts</code>:</p>
+<p><img alt="image.png" src="/.attachments/image-10b15cbd-1f38-440f-98e6-c4aae63b0a24.png" /></p>
+              
+            </div>
+          </div><footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

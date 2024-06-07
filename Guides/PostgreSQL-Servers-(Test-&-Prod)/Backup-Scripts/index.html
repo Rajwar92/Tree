@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../../../img/favicon.ico" />
+    <title>invoke_backup_cleaner.sh - Internal Documentation</title>
+    <link rel="stylesheet" href="../../../css/theme.css" />
+    <link rel="stylesheet" href="../../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "invoke_backup_cleaner.sh";
+        var mkdocs_page_input_path = "Guides\\PostgreSQL-Servers-(Test-\u0026-Prod)\\Backup-Scripts.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../../.." class="icon icon-home"> Internal Documentation
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../../about/">About</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../..">Internal Documentation</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../.." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">invoke_backup_cleaner.sh</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="invoke_backup_cleanersh">invoke_backup_cleaner.sh</h1>
+<pre><code>#!/bin/bash
+
+~/backup_cleaner.py --backup-dir ~/dumps/ --day 1 --week 1 --month 1 --year 2 --keep-older
+</code></pre>
+<h1 id="dump_backupsh">dump_backup.sh</h1>
+<pre><code>#!/bin/bash
+
+# use pg_basebackup to make a dump of the local database, should run this on the secondary node
+
+BACKUP_NAME=&quot;backup_&quot;`date -u &quot;+%Y-%m-%d-%H-%M-%S&quot;`
+
+cd ~/dumps/
+pg_basebackup -D &quot;${BACKUP_NAME}&quot;
+tar cvzf &quot;${BACKUP_NAME}.tar.gz&quot; &quot;${BACKUP_NAME}&quot;
+rm -r &quot;${BACKUP_NAME}&quot;
+</code></pre>
+<h1 id="backup_cleanerpy">backup_cleaner.py</h1>
+<pre><code>#!/usr/bin/python3
+import argparse
+import os
+import shutil
+import sys
+from datetime import datetime, timedelta
+from typing import List, Tuple
+
+_FileDateList = List[Tuple[str, datetime]]
+
+
+_UTC_NOW = datetime.utcnow
+
+
+class _TimeBucketing:
+    def __init__(self, start: datetime, length: timedelta, limit: int):
+        self._start = start
+        self._end = start - length
+        self._length = length
+        self._limit = limit
+
+    def _bucketing(self, file_date_list: _FileDateList) -&gt; List[_FileDateList]:
+        file_date_list.sort(key=lambda x: x[1], reverse=True)
+        buckets: List[_FileDateList] = []
+
+        start = self._start
+
+        bucketing_delta = self._length / self._limit
+        for _ in range(self._limit):
+            end = start - bucketing_delta
+            bucket = []
+            while file_date_list and file_date_list[0][1] &gt; end:
+                bucket.append(file_date_list.pop(0))
+            if bucket:
+                buckets.append(bucket)
+            start -= bucketing_delta
+
+        for bucket in buckets:
+            bucket.sort(key=lambda x: x[1])
+        return buckets
+
+    def get_keeping_list(self, file_list: _FileDateList) -&gt; List[str]:
+        file_list_in_range = []
+
+        for file, date in file_list:
+            if self._end &lt; date &lt; self._start:
+                file_list_in_range.append((file, date))
+
+        keeping_list: List[str] = []
+
+        if self._limit == 0:
+            return []
+
+        buckets = self._bucketing(file_list_in_range)
+
+        while buckets:
+            remaining_buckets = []
+            for bucket in buckets:
+                first = bucket.pop(0)[0]
+                if len(keeping_list) &lt; self._limit:
+                    keeping_list.append(first)
+                if bucket:
+                    remaining_buckets.append(bucket)
+            buckets = remaining_buckets
+
+        return keeping_list
+
+
+class BackupCleaner:
+    &quot;&quot;&quot;
+    Backup Cleaner
+
+    Clean backup files and keep backups in a logarithmically manner.
+    Need to specify the backup directory and how many backups are needed for each time period.
+
+    The backups should be name as:
+
+    name_yyyy-mm-dd-hh-mm-ss.ext
+
+    * &quot;name&quot; can be any string without the _ (underscore).
+    * The time is in UTC time.
+
+    Example: backup_2021-02-16-23-18-68.gz
+    &quot;&quot;&quot;
+
+    def __init__(self, args: List[str]):
+        parser = self._argument_parser()
+        arguments = parser.parse_args(args)
+
+        self._backup_dir = arguments.backup_dir
+        self._backups_this_day = arguments.day
+        self._backups_this_week = arguments.week
+        self._backups_this_month = arguments.month
+        self._backups_this_year = arguments.year
+        self._dry_run = arguments.dry_run
+        self._keep_older = arguments.keep_older
+
+    @staticmethod
+    def _argument_parser():
+        parser = argparse.ArgumentParser(description=&quot;Backup Cleaner&quot;)
+        parser.add_argument(
+            &quot;--backup-dir&quot;,
+            dest=&quot;backup_dir&quot;,
+            type=str,
+            required=True,
+            help=&quot;Backup directory, search backups in the directory.&quot;,
+        )
+        parser.add_argument(
+            &quot;--day&quot;,
+            dest=&quot;day&quot;,
+            type=int,
+            required=True,
+            help=&quot;How many backups need for the previous day.&quot;,
+        )
+        parser.add_argument(
+            &quot;--week&quot;,
+            dest=&quot;week&quot;,
+            type=int,
+            required=True,
+            help=&quot;How many backups need for the previous week.&quot;,
+        )
+        parser.add_argument(
+            &quot;--month&quot;,
+            dest=&quot;month&quot;,
+            type=int,
+            required=True,
+            help=&quot;How many backups need for the previous month.&quot;,
+        )
+        parser.add_argument(
+            &quot;--year&quot;,
+            dest=&quot;year&quot;,
+            type=int,
+            required=True,
+            help=&quot;How many backups need for the previous year.&quot;,
+        )
+        parser.add_argument(
+            &quot;--dry-run&quot;,
+            dest=&quot;dry_run&quot;,
+            action=&quot;store_true&quot;,
+            default=False,
+            required=False,
+            help=&quot;Not actually remove files, only display the files to remove and to keep.&quot;,
+        )
+        parser.add_argument(
+            &quot;--keep-older&quot;,
+            dest=&quot;keep_older&quot;,
+            action=&quot;store_true&quot;,
+            default=False,
+            required=False,
+            help=&quot;Keep the files which is older than a year&quot;,
+        )
+        return parser
+
+    @staticmethod
+    def _parse_file_name(filepath: str) -&gt; datetime:
+        filename = os.path.basename(filepath)
+        time_string = filename.split(&quot;_&quot;)[1].split(&quot;.&quot;)[0]  # IndexError
+        time = datetime.strptime(time_string, &quot;%Y-%m-%d-%H-%M-%S&quot;)
+        return time
+
+    def _find_db_backup_files(self) -&gt; _FileDateList:
+        file_and_date: _FileDateList = []
+        for file in os.scandir(self._backup_dir):
+            date = self._parse_file_name(file.path)
+            file_and_date.append((file.path, date))
+        return file_and_date
+
+    @staticmethod
+    def _remove(path):
+        if os.path.isdir(path):
+            shutil.rmtree(path)
+        else:
+            os.remove(path)
+
+    def clean(self):
+        current_time = _UTC_NOW()
+
+        file_and_date = self._find_db_backup_files()
+
+        start = current_time
+        today = _TimeBucketing(start, timedelta(days=1), self._backups_this_day)
+        today_keeping_list = today.get_keeping_list(file_and_date)
+        today_keeping_list.sort(reverse=True)
+
+        start -= timedelta(days=1)
+        this_week = _TimeBucketing(start, timedelta(days=7), self._backups_this_week)
+        this_week_keeping_list = this_week.get_keeping_list(file_and_date)
+        this_week_keeping_list.sort(reverse=True)
+
+        start -= timedelta(days=7)
+        this_month = _TimeBucketing(start, timedelta(days=30), self._backups_this_month)
+        this_month_keeping_list = this_month.get_keeping_list(file_and_date)
+        this_month_keeping_list.sort(reverse=True)
+
+        start -= timedelta(days=30)
+        this_year = _TimeBucketing(start, timedelta(days=365), self._backups_this_year)
+        this_year_keeping_list = this_year.get_keeping_list(file_and_date)
+        this_year_keeping_list.sort(reverse=True)
+
+        keeping_list = (
+            today_keeping_list
+            + this_week_keeping_list
+            + this_month_keeping_list
+            + this_year_keeping_list
+        )
+
+        if self._keep_older:
+            start -= timedelta(days=365)
+            older = list(filter(lambda x: x[1] &lt; start, file_and_date))
+            older_files = list(map(lambda x: x[0], older))
+            keeping_list += older_files
+
+        # Assign remove list explicitly, so newly generated files won't be removed
+        remove_list = list(set(map(lambda x: x[0], file_and_date)) - set(keeping_list))
+        remove_list.sort(reverse=True)
+
+        print(&quot;Is Dry Run:&quot;, self._dry_run)
+        print(&quot;&quot;)
+
+        print(&quot;Files to keep:&quot;)
+        print(&quot;day:&quot;, today_keeping_list)
+        print(&quot;week:&quot;, this_week_keeping_list)
+        print(&quot;month:&quot;, this_month_keeping_list)
+        print(&quot;year:&quot;, this_year_keeping_list)
+        if self._keep_older:
+            print(&quot;older:&quot;, older_files)
+
+        print(&quot;&quot;)
+        print(&quot;Files to remove:&quot;)
+        print(remove_list)
+
+        if not self._dry_run:
+            for file in remove_list:
+                self._remove(file)
+            print(&quot;Files removed&quot;)
+
+
+if __name__ == &quot;__main__&quot;:
+    CLEANER = BackupCleaner(sys.argv[1:])
+    CLEANER.clean()
+</code></pre>
+              
+            </div>
+          </div><footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+    
+  </span>
+</div>
+    <script src="../../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../../..";</script>
+    <script src="../../../js/theme_extra.js"></script>
+    <script src="../../../js/theme.js"></script>
+      <script src="../../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

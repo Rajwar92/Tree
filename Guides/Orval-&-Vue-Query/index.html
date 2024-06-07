@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>Caveats (READ ME) - Internal Documentation</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Caveats (READ ME)";
+        var mkdocs_page_input_path = "Guides\\Orval-\u0026-Vue-Query.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> Internal Documentation
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../about/">About</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">Internal Documentation</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Caveats (READ ME)</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="caveats-read-me">Caveats (READ ME)</h1>
+<h2 id="reactivity">Reactivity</h2>
+<p>Orval does not seem to recognize changes to prop values. This means that if you are passing a prop as a parameter to a <code>useQuery</code> hook, the query won't be re-run when the prop value is updated. To work around this issue, convert the prop to a <code>ref</code> in order to make it reactive.</p>
+<p>Example from <a href="https://devops.wisetechglobal.com/wtg/BorderWise/_git/WebWatcher?path=%2FFrontend%2Fsrc%2Fviews%2Fcontent-setup%2Fcontent-definition%2FConfigurationTab.tsx&amp;_a=contents&amp;version=GBmaster"><code>/Frontend/src/views/content-setup/content-definition/ConfigurationTab.tsx</code></a>:</p>
+<p>❌ Bad code:</p>
+<pre><code>setup(props) {
+  const apiExtractionLineQuery = useApiExtractionLineGETAllOfSelected(props.itemPK);
+  const customExtractionLineQuery = useCustomExtractionLineGETAllOfSelected(props.itemPK);
+  const webExtractionLineQuery = useWebExtractionLineGETAllOfSelected(props.itemPK);
+}
+</code></pre>
+<p>✅ Good code:</p>
+<pre><code>setup(props) {
+  const itemPK = toRef(() =&gt; props.itemPK);
+  const apiExtractionLineQuery = useApiExtractionLineGETAllOfSelected(itemPK);
+  const customExtractionLineQuery = useCustomExtractionLineGETAllOfSelected(itemPK);
+  const webExtractionLineQuery = useWebExtractionLineGETAllOfSelected(itemPK);
+}
+</code></pre>
+<h1 id="overview">Overview</h1>
+<h2 id="generation-process">Generation Process</h2>
+<ol>
+<li>Backend build generates a <code>swagger.json</code> file containing the OpenAPI schema that describes all of the endpoints that the backend exposes. This file is stored at <a href="https://devops.wisetechglobal.com/wtg/BorderWise/_git/WebWatcher?path=%2FSwagger%2Fswagger.json"><code>/Swagger/swagger.json</code></a>.</li>
+<li>Frontend has an npm script <a href="https://devops.wisetechglobal.com/wtg/BorderWise/_git/WebWatcher?path=%2FFrontend%2Fpackage.json&amp;version=GBmaster&amp;line=23&amp;lineEnd=23&amp;lineStartColumn=6&amp;lineEndColumn=22&amp;lineStyle=plain&amp;_a=contents"><code>swagger:generate</code></a> which runs Orval. This is automatically done post install as well.</li>
+<li>Orval uses the defined config at <a href="https://devops.wisetechglobal.com/wtg/BorderWise/_git/WebWatcher?path=%2FFrontend%2Forval.config.js"><code>/Frontend/orval.config.js</code></a> to generate the queries and respective hooks that correspond to the various endpoints outlined in the swagger schema file. The generated code is located at <a href="https://devops.wisetechglobal.com/wtg/BorderWise/_git/WebWatcher?path=%2FFrontend%2Fsrc"><code>/Frontend/src/api</code></a>. (<em>Note: the generated code is ignored by git</em>)</li>
+<li>To use any of the queries or hooks simply import them from <code>/Frontend/src/api</code>.</li>
+</ol>
+              
+            </div>
+          </div><footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

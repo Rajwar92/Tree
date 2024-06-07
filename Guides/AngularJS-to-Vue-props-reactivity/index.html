@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>AngularJS to Vue props reactivity - Internal Documentation</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "AngularJS to Vue props reactivity";
+        var mkdocs_page_input_path = "Guides\\AngularJS-to-Vue-props-reactivity.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> Internal Documentation
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../about/">About</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">Internal Documentation</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">AngularJS to Vue props reactivity</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <p>Recently we have finished something I've never seen anywhere else before: deep object/array reactivity from AngularJS into Vue.</p>
+<p>It will allow us to pass complex/nested objects/arrays as props into <ve-*/> components</p>
+<p>You can use it like this:</p>
+<pre><code>const data = { one: { two: 3 } };
+const reactiveData = reactive(data);
+// in template: &lt;ve-some-component ng-prop-some_prop=&quot;$ctrl.reactiveData&quot; ... /&gt;
+// DO NOT do this:
+ng-prop-some_prop=&quot;$ctrl.reactiveData.one&quot; - will not work, only pass the &quot;root&quot; object that was defined using reactive()
+reactiveData.one.two++; // this deep change will be detected and `ve-some-component` re-rendered
+// DO NOT do this:
+reactiveData = {} // NOT reactive anymore
+// DO this instead:
+reactiveData = reactive({})
+// In Vue you need to use `AngularJSReactiveProperty` type to define props:
+props: {
+  something: {
+    type: Object as PropType&lt;AngularJSReactiveProperty&lt;{ one: { two: number } }&gt;&gt;
+  }
+}
+// To access reactive prop value, you need to use `.value` similar to how reactivity works in Vue:
+setup(props) {
+  console.log(props.something.value)
+  // ...
+  // There's internal `props.something._version` - this it to trigger re-render, don't worry about it
+}
+// In Vue you can also use watch() to detect changes:
+watch(
+  () =&gt; props.myObject,
+  (new, old) =&gt; {
+    // value change detected
+    console.log(props.myObject.value);
+    // NOTE: this is always true
+    // DO NOT rely on old value
+    new.value === old.value
+  }
+);
+</code></pre>
+<p>Learn more in <a href="https://devops.wisetechglobal.com/wtg/BorderWise/_git/BorderWiseWeb?path=%2FFrontend%2Fvue-elements%2FREADME.md&amp;_a=preview&amp;anchor=reactivity-from-angularjs-to-vue">README</a>
+There are also some plans to make it better and helps devs catch bugs/mistakes.</p>
+<p>Feel free to start using it in your WIs, and ask questions or share feedback if something doesn't work as it's a very early stage.</p>
+              
+            </div>
+          </div><footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>ve%2D%2A components props validation - Internal Documentation</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "ve%2D%2A components props validation";
+        var mkdocs_page_input_path = "Guides\\ve%2D%2A-components-props-validation.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> Internal Documentation
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../about/">About</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">Internal Documentation</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">ve%2D%2A components props validation</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <p>TL;DR: Required Vue props are now guaranteed to be provided</p>
+<p>Big improvement for AngularJS+Vue was just checked in.
+Now if you defined your prop as required in Vue like so:</p>
+<pre><code class="language-js">props: {
+  tabName: {
+    type: String,
+    required: true
+  }
+}
+</code></pre>
+<p>then we will perform prop validation automatically.
+We will wait for AngularJS digest cycle to finish
+Once it's done - we will check if required prop is not present - error will be logged and displayed instead of the component.
+The component will only attempt to render if required prop is present.
+This means that you can trust TypeScript types and just use <code>props.tabName</code> trusting that it will always be <code>String</code> and never <code>undefined</code>.
+Because if it is <code>undefined</code> - the error is logged and displayed instead of the actual component.</p>
+<p>The main benefit is that this helps ensure that AngularJS implementation matches our Vue expectations.</p>
+<p>Previously we might declare prop as "required" and TS will tell us that it's always defined, but AngularJS might set it to undefined. And we had no good way of handling these errors.</p>
+<p>If you get errors saying that required prop isn't defined - it means one of two things:
+Either Vue misunderstood AngularJS implementation and this prop is actually optional, and so we should always check before using/relying on it
+Or AngularJS has a bug, and sets required prop to undefined instead of throwing error or something, then we need to fix AngularJS logic, this is a silent bug that we always had but never knew about it</p>
+<p>And there are two reasons why props validation error can occur:
+1. The prop should actually be optional. 
+For example, if we had <code>&lt;ve-user-info/&gt;</code> component - then <code>studentId</code> prop would be optional, because not everyone is a student.
+2. There is a bug on AngularJS side and it shouldn't be rendering ve-<em> component without required prop. 
+For example, if we had <code>&lt;ve-user-info/&gt;</code> component - then <code>userEmail</code> prop can not be optional. It is required in order for the component to function, and if we don't provide it - the component loses reason for existing. We also can't "solve" this by providing default email, because why would you be showing some empty/dummy email to user?
+The challenge is when prop needs to be dynamically loaded by calling API for example.
+We should use the following principles:
+   1. Do not render component without providing required prop - error will be thrown
+   2. Do not add default prop value just to make error go away
+   3. If it takes more than 1 second to load - ideally show loading
+   4. It's better to handle this in the parent of ve-</em> component
+For a concrete example of what not to do see <a href="https://devops.wisetechglobal.com/wtg/BorderWise/_git/BorderWiseWeb/pullrequest/209376?_a=files">this pr</a>. I'll update you guys with an example of what to do after we fix it.</p>
+<p>Props validation for ve-* components allows us to ensure that strict contracts between components aren't broken. And this is very important when working in a large team with large number of components, not everyone knows everything about every component, so the least we can do it to make props reliable.</p>
+<p>Check out PR <a href="https://devops.wisetechglobal.com/wtg/BorderWise/_git/BorderWiseWeb/pullrequest/207761?_a=files">here</a>.</p>
+              
+            </div>
+          </div><footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

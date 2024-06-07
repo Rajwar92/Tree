@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>Summary - Internal Documentation</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Summary";
+        var mkdocs_page_input_path = "Specs\\CW1%2DBorderWise-integration-specification.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> Internal Documentation
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../about/">About</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">Internal Documentation</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Summary</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="summary"><strong>Summary</strong></h1>
+<p>This document outlines the integration specification for the WebSocket API integration between CargoWise One (CW1) and BorderWise, specifically focusing on the WebSocket Hub component. </p>
+<h1 id="what-is-the-websocket-api-and-why-do-we-need-it-for-borderwise-and-cargowiseone-integration"><strong>What is the WebSocket API and why do we need it for BorderWise and CargoWiseOne integration?</strong></h1>
+<p>The WebSocket API allows real-time communication between two systems using WebSocket technology. It allows us to send messages to a WebSocket hub and receive event-driven responses without having to poll the WebSocket hub for a reply. In our scenario, it allows for real-time communication between BorderWise and CargowiseOne. </p>
+<h1 id="a-high-level-overview-of-borderwise-and-cargowiseone-integration-using-the-websocket-api"><strong>A high level overview of BorderWise and CargoWiseOne integration using the WebSocket API</strong></h1>
+<ol>
+<li>
+<p>When we open BorderWiseWeb from CargoWiseOne, we end up with a BorderWise Web URL with various query parameters. For example,</p>
+<p><a href="">https://app.borderwise.com/?<strong>tariff</strong>=0203.11.00<strong>stat</strong>=07&amp;impexp=I&amp;c=AU&amp;ret=edient:Command%3DShowEditForm%26LicenceCode%3DEDIEDIDAT%26ControllerID%3DBorderWiseWebReturnHook%26BusinessEntityPK%3D7edaf780-a807-4319-928a-b21cf7ad69b9%26Hash%3D%2bCTL0nUJ841AN0c6JHjyqdKbl2GezTpZz%26Args%3D&amp;version=2&amp;<strong>mode</strong>=Batch&amp;WebSocketClientId=7edaf780-a807-4319-928a-b21cf7ad69b9&amp;WebSocketTimestamp=20230531102831</a></p>
+<p>This link will open up to a tariff table (as per <strong>tariff</strong> param provided in url) for the respective country (<strong>country</strong> param), with a specific status code highlighted (<strong>stat</strong> param). Further, when we open BorderWise with this URL, we either end up in Single-Line Tariff Classification mode or Multi-Line Tariff Classification mode based on url parameter <strong>mode</strong>. This URL also includes a <strong>WebSocketClientId</strong>, a unique client ID that BWW will use to establish a connection with the WebSocket Hub, and ensure that all messages sent to the hub by BWW can be forwarded on to the correct CW1 instance. Read more about the <a href="https://devops.wisetechglobal.com/wtg/BorderWise/_wiki/wikis/BorderWise.wiki/5945/CW1-BorderWise-integration-specification?anchor=**borderwise-url-parameters**">BorderWise URL parameters here</a>.
+1. When the BWW app is opened in the step above, we are <a href="https://devops.wisetechglobal.com/wtg/BorderWise/_wiki/wikis/BorderWise.wiki/5945/CW1-BorderWise-integration-specification?anchor=initiate-websocket-connection">initializing the web socket connection</a>.
+1.  After successfully initializing the WebSocket connection with the BorderWise WebSocket hub, the WebSocket's onOpen event handler is triggered and BWW proceeds to send <a href="https://devops.wisetechglobal.com/wtg/BorderWise/_wiki/wikis/BorderWise.wiki/5945/CW1-BorderWise-integration-specification?anchor=when-websocket-connection-is-successfully-established">an initial message</a> to the BorderWise WebSocket Hub, indicating the start (STA) of web socket exchange. All these messages exchanged over the WebSocket channel have a <a href="https://devops.wisetechglobal.com/wtg/BorderWise/_wiki/wikis/BorderWise.wiki/5945/CW1-BorderWise-integration-specification?anchor=**exchange-message-format**">specific format</a>.
+The Message flow varies according to the <strong>mode</strong> of tariff classification:</p>
+<ul>
+<li>For Single-line Tariff Classification</li>
+<li>After specifying the Tariff Code for the single invoice line, BorderWise will send a response message (MSG) with the tariff code to BorderWise WebSocket Hub. This gets passed on to CW1.</li>
+<li>
+<p>CW1 sends message (FIN) indicating the completion of WebSocket exchange.  This message is relayed to BWW and the WebSocket connection is closed as a result. </p>
+</li>
+<li>
+<p>For Multi-line Tariff Classification</p>
+</li>
+<li>Proceeding this, BWW sends a <a href="https://devops.wisetechglobal.com/wtg/BorderWise/_wiki/wikis/BorderWise.wiki/5945/CW1-BorderWise-integration-specification?anchor=on-receiving-a-message-from-websocket-hub">message (MSG)</a> to the BorderWise WebSocket Hub indicating that the WebSocket is connected, and this is then relayed to CW1. </li>
+<li>Now that the WebSocket connection has been established, CW1 can send a message to the WebSocket Hub with the <strong>invoice lines</strong>. WebSocket Hub then pushes these invoice lines to BWW.</li>
+<li>After classifying the invoice lines, BorderWise will send a response message (MSG) with the <strong>tariff classification</strong> to BorderWise WebSocket Hub. This gets passed on to CW1. </li>
+<li>CW1 sends message (FIN) indicating the completion of WebSocket exchange.  This message is relayed to BWW and the WebSocket connection is closed as a result. </li>
+</ul>
+</li>
+<li>
+<p>Outside of this chain of events, we can also have error (ERR) and cancellation (CAN) messages. Read more about these <a href="https://devops.wisetechglobal.com/wtg/BorderWise/_wiki/wikis/BorderWise.wiki/5945/CW1-BorderWise-integration-specification?anchor=**exchange-message-format**">here</a>.  </p>
+</li>
+</ol>
+<h1 id="message-flow-diagram"><strong>Message Flow Diagram</strong></h1>
+<p>The below diagram depicts flow of messages between: 
+- CargoWise One (CW1) 
+- BorderWise Portal (BW Web) 
+- BorderWise WebSocket Hub (BWW.API)</p>
+<p><img alt="download.png" src="/.attachments/download-5c3548e5-629b-427f-8188-1e9d14dd9319.png" /></p>
+<p><strong>Note</strong>: If the BorderWise web application fails to send a WebSocket message to CW1 due to WebSocket connection failure, 
+   it will fallback to using EdiCommand to send the message. </p>
+<h1 id="borderwise-websocket-hub-api"><strong>BorderWise WebSocket Hub API</strong></h1>
+<ul>
+<li>
+<h3 id="description">Description</h3>
+<p>This API endpoint handles WebSocket requests and establishes a WebSocket connection with the client. It listens for incoming WebSocket connections and processes messages sent by the client. </p>
+</li>
+<li>
+<h3 id="route">Route</h3>
+<p>GET https://app.borderwise.com/api/ws/hub </p>
+</li>
+<li>
+<h3 id="request-headers">Request Headers</h3>
+<p>No specific request headers are required for this API. </p>
+</li>
+<li>
+<h3 id="request-parameters">Request Parameters</h3>
+<p>No request parameters are used in this API. </p>
+</li>
+<li>
+<h3 id="response">Response</h3>
+<p>The API establishes a WebSocket connection with the client if the request is a valid WebSocket upgrade request. If the WebSocket connection is successfully established, it proceeds to process the upcoming web socket messages. </p>
+</li>
+<li>
+<h3 id="errors">Errors</h3>
+<p>If the request is not a valid WebSocket request, the API responds with a BadRequest status code (HTTP 400). If the WebSocket connection is closed with an error, the API logs the error and sets the response status code to BadRequest (HTTP 400). </p>
+</li>
+<li>
+<h3 id="authentication">Authentication</h3>
+<p>This API does not require any authentication. Clients are supposed to use unique identifiers (GUID) for message exchange which guarantees that fraudulent client is not able to send fake messages to real users unless they know the identifier </p>
+</li>
+<li>
+<h3 id="more-details">More details</h3>
+<p>Refer to the article <a href="https://wisetechglobal.sharepoint.com/sites/StackOverflow/Articles/Forms/AllItems.aspx?id=%2Fsites%2FStackOverflow%2FArticles%2F10505%2Emd&amp;parent=%2Fsites%2FStackOverflow%2FArticles">CargowiseOne and Borderwise Integration</a> for an overview of BorderWise WebSocket Hub Architecture.</p>
+</li>
+</ul>
+<h1 id="borderwise-url-parameters"><strong>BorderWise URL Parameters</strong></h1>
+<p>When CW1 initiates the opening of BorderWise, certain URL parameters are included as part of the URL. These parameters determine the behavior of the BorderWise. Below are the details of each parameter passed in the URL: </p>
+<ul>
+<li>
+<p><strong>tariff</strong>: This parameter specifies the tariff code to be searched for once BorderWise is opened. After loading BorderWise, it will display the tariff table containing this specific tariff code. </p>
+</li>
+<li>
+<p><strong>stat</strong>: This parameter indicates the stat code to be highlighted upon opening BorderWise. After loading BorderWise, it will highlight the specified stat code in the tariff table. </p>
+</li>
+<li>
+<p><strong>impexp</strong>: This parameter determines the type of tariff classification and can take two possible values: </p>
+</li>
+<li>"I": Indicates Import classification. </li>
+<li>
+<p>"E": Indicates Export classification. </p>
+</li>
+<li>
+<p><strong>country</strong>: This parameter identifies the country code of tariff classification. Currently supported country codes by BorderWise are </p>
+</li>
+<li>AU: Australia </li>
+<li>CA: Canada </li>
+<li>EU: European Union </li>
+<li>NZ: New Zealand </li>
+<li>SG: Singapore </li>
+<li>ZA: South Africa </li>
+<li>UK: United Kingdom </li>
+<li>
+<p>US: United States </p>
+</li>
+<li>
+<p><strong>ret</strong>: This parameter contains the edient command that should be used to return tariff data back to CW1 in case the WebSocket connection fails.  </p>
+</li>
+<li>
+<p><strong>version</strong>: This parameter determines the version of the Exchange Message Model between CW1 and BorderWise. Currently supported values for this parameter are </p>
+</li>
+<li>
+<p>1 : This model supports only one tariff classification at a time, and this will be outdated in some time. </p>
+</li>
+<li>
+<p>2 : This model supports multi-line tariff classification in one go. </p>
+</li>
+<li>
+<p><strong>mode</strong>: This parameter determines the mode of tariff classification and can have the following possible values: </p>
+</li>
+<li>
+<p>SINGLE : Indicates single-line tariff classification, meaning only one invoice line can be classified from the current instance of BorderWise. </p>
+</li>
+<li>BATCH : Indicates multi-line tariff classification, allowing multiple invoice lines to be classified from the current instance of BorderWise. </li>
+</ul>
+<p>The value of this parameter is determined by BW API based on user details and country of tariff classification.</p>
+<ul>
+<li>
+<p><strong>WebSocketClientId</strong>: This parameter represents a unique client ID used by BorderWise to establish a connection with the WebSocket Hub. </p>
+</li>
+<li>
+<p><strong>WebSocketTimestamp</strong>: This parameter specifies the current timestamp in the format yyyyMMddHHmmss . </p>
+</li>
+</ul>
+<p>Example of BorderWise URL opened from CW1  </p>
+<p>https://app.borderwise.com/?tariff=0203.11.00&amp;stat=07&amp;impexp=I&amp;c=AU&amp;ret=edient:Command%3DShowEditForm%26LicenceCode%3DEDIEDIDAT%26ControllerID%3DBorderWiseWebReturnHook%26BusinessEntityPK%3D7edaf780-a807-4319-928a-b21cf7ad69b9%26Hash%3D%252bCTL0nUJ841AN0c6JHjyqdKbl2GezTpZz%26Args%3D&amp;version=2&amp;mode=Batch&amp;WebSocketClientId=7edaf780-a807-4319-928a-b21cf7ad69b9&amp;WebSocketTimestamp=20230531102831 </p>
+<h1 id="exchange-message-format"><strong>Exchange Message Format</strong></h1>
+<p>The messages exchanged over WebSocket channel have to follow a specific format and the <a href="https://devops.wisetechglobal.com/wtg/BorderWise/_git/BorderWiseWeb?path=%2FBackend%2FWebApi%2FCore%2FModels%2FWebSocketExchangeMessage.cs&amp;_a=contents&amp;version=GBmaster">WebSocketExchangeMessage</a> class represents the data model for it. Below are the details of fields in the WebSocketExchangeMessage Model.</p>
+<ul>
+<li>
+<p><strong>ClientId</strong> (Guid): A unique identifier assigned to each WebSocket client. </p>
+</li>
+<li>
+<p><strong>SystemNameSender</strong> (string): A string representing the name of the system that sent the message. </p>
+</li>
+<li>
+<p><strong>SystemNameRecipient</strong> (string): A string representing the name of the system intended to receive the message. </p>
+</li>
+<li>
+<p><strong>Status</strong> (<a href="https://devops.wisetechglobal.com/wtg/BorderWise/_git/BorderWiseWeb?path=%2FBackend%2FWebApi%2FCore%2FHelpers%2FConstants.cs&amp;version=GBmaster&amp;_a=contents">WebSocketExchangeMessageStatus</a>): An enum representing the status of the WebSocket message. It has the following possible values. </p>
+</li>
+<li>
+<p><strong>STA</strong> (Status - 1) stands for "START" and is used to start websocket message exchange. This should be the first message sent to WebSocket Hub after establishing the connection </p>
+</li>
+<li>
+<p><strong>MSG</strong> (Message - 2) stands for "Message" and represents a regular message exchanged between the client and the server. </p>
+</li>
+<li>
+<p><strong>FIN</strong> (Finish - 3) stands for "Finish" and indicates the end or completion of a WebSocket exchange or communication. </p>
+</li>
+<li>
+<p><strong>ACK</strong> (Acknowledgment - 4) stands for "Acknowledgment" and is used to acknowledge the receipt or successful processing of a WebSocket message. </p>
+</li>
+<li>
+<p><strong>ERR</strong> (Error - 5) stands for "Error" and is used to indicate that an error has occurred during the WebSocket communication.  <br />
+<strong>Usage:</strong> When an error is encountered in the communication process, the server or client may send an ERR message to inform the other party about the issue.  </p>
+</li>
+<li>
+<p><strong>CAN</strong> (Cancellation - 6) stands for "Cancellation" and is used to signal the cancellation of a WebSocket exchange or action. 
+    <strong>Usage:</strong> When a WebSocket exchange or task needs to be canceled before completion, the server or client may send a CAN message to notify the other party about the cancellation. This event is sent by CW1 once the user press the Cancel button on the modal window. </p>
+</li>
+<li>
+<p><strong>Data</strong> (string): A string containing the main content or payload of the WebSocket message. </p>
+</li>
+</ul>
+<p>The data has to follow some specific format when the type of message is not Information i.e. it is a TariffClassification/InvoiceLine msg. The format of the data attribute 
+ depends on the Mode parameter in the url passed by CW1 </p>
+<p>When the Mode param in the URL is BATCH, it implies that the user does the tariff classification for all the invoice lines in one go, then data should follow the following format </p>
+<p><code>{
+     BorderWiseTariffSelectionResults: [ 
+       {     
+            invoiceLinePK    : guid, 
+            invoiceLineNumber: integer, 
+            invoiceNumber    : string, 
+            tariffCode       : string, 
+            statCode         : string, 
+            description      : string, 
+        } 
+     ]
+  }</code></p>
+<p>And when Mode param in the URL is SINGLE, which implies that the user is classifying only one invoice line, then data should follow the below format </p>
+<p><code>{
+      TariffCode: string
+  }</code></p>
+<ul>
+<li>
+<p><strong>Type</strong> (string): A string representing the type or category of the message. It has the following possible value. 
+  ###Information (Information): 
+  Represents that the message transferred is an information message and not an actual InvoiceLines/TariffClassification msg. </p>
+</li>
+<li>
+<p><strong>MachineName</strong> (string): A string representing the name of the machine where the message originated from. </p>
+</li>
+<li>
+<p><strong>Email</strong> (string): A string representing an email associated with the WebSocket message (e.g., the sender's email). </p>
+</li>
+<li>
+<p><strong>Timestamp</strong> (DateTime): A DateTime property representing the timestamp of when the message was created. It is initialized with the current UTC time.  </p>
+</li>
+</ul>
+<h2 id="sample-websocket-exchange-messages"><strong>Sample WebSocket Exchange Messages</strong></h2>
+<ul>
+<li>
+<h3 id="message-with-status-msg">Message with Status MSG</h3>
+</li>
+</ul>
+<p><code>{  
+      ClientId: 6d674c0c-5403-4039-af8d-5c8dc6bfddfe, 
+      SystemNameSender: "CargoWiseOne ",  
+      SystemNameRecipient: "BorderWiseWeb",  
+      Status: MSG,  
+      Data: { 
+          BorderWiseTariffSelectionResults : [ 
+              { 
+                  Description: ".Weighing more than 1 kg but not more than 5 kg", 
+                  InvoiceLineNumber: "1", 
+                  InvoiceNumber: "123", 
+                  IsSelected: false, 
+                  StatCode: "", 
+                  TariffCode: "2205.90.90 14" 
+              } 
+          ] 
+      }, 
+      Type: null,  
+      MachineName: null,  
+      Email: "testmail@ext",  
+      Timestamp: 07/27/2023 09:37:29 
+  }</code></p>
+<ul>
+<li>
+<h3 id="cancel-message-from-cw1">Cancel Message from CW1</h3>
+</li>
+</ul>
+<p><code>{  
+      ClientId: 6d674c0c-5403-4039-af8d-5c8dc6bfddfe, 
+      SystemNameSender: "CargoWiseOne ",  
+      SystemNameRecipient: "BorderWiseWeb",  
+      Status: CAN,  
+      Data: null, 
+      Type: null,  
+      MachineName: null,  
+      Email: "testmail@ext",  
+      Timestamp: 07/27/2023 09:37:29 
+  }</code></p>
+<h1 id="borderwise-portal-websocket-event-handlers"><strong>BorderWise Portal WebSocket event handlers</strong></h1>
+<p>Source code URL: <a href="https://devops.wisetechglobal.com/wtg/BorderWise/_git/BorderWiseWeb?path=%2FFrontend%2Fsrc%2Fapp%2Fcore%2Fservices%2Fwebsocket.service.js&amp;_a=contents&amp;version=GBmaster">BWW_ConnectToBWWWebSocketHub_SourceCode</a> </p>
+<ul>
+<li>
+<h3 id="initiate-websocket-connection">Initiate WebSocket Connection</h3>
+</li>
+</ul>
+<p>Source code URL: <a href="https://devops.wisetechglobal.com/wtg/BorderWise/_git/BorderWiseWeb?path=%2FFrontend%2Fsrc%2Fapp%2Fcore%2Fservices%2Fwebsocket.service.js&amp;version=GBmaster&amp;line=48&amp;lineEnd=55&amp;lineStartColumn=9&amp;lineEndColumn=10&amp;lineStyle=plain&amp;_a=contents">createWebSocketConnection</a>  </p>
+<ul>
+<li>
+<p>When CW1 opens BorderWise window, the unique client ID is passed as a URL parameter with the name webSocketClientId. This client ID is used for further web socket message exchange. It ensures that all the messages sent to the Hub are redirected to the correct CW1 instance. </p>
+</li>
+<li>
+<p>BWW uses browser built-in WebSocket API to interact with WebSocket connections. </p>
+</li>
+<li>
+<p>To instantiate the WebSocket connection, the URL needed is <a href="">wss://app.borderwise.com/api/ws/hub</a> in the case of BorderWise WebSocket Hub. </p>
+</li>
+<li>
+<h3 id="when-websocket-connection-is-successfully-established">When WebSocket connection is successfully established</h3>
+</li>
+</ul>
+<p>Source code URL: <a href="https://devops.wisetechglobal.com/wtg/BorderWise/_git/BorderWiseWeb?path=%2FFrontend%2Fsrc%2Fapp%2Fcore%2Fservices%2Fwebsocket.service.js&amp;version=GBmaster&amp;line=66&amp;lineEnd=69&amp;lineStartColumn=17&amp;lineEndColumn=19&amp;lineStyle=plain&amp;_a=contents">startWebSocketMessageExchange</a> </p>
+<p>After successfully establishing the WebSocket connection with the BorderWise WebSocket hub, the WebSocket's onOpen event handler is triggered and the client proceeds to send an STA start message. </p>
+<p>Sample STA start message </p>
+<p><code>{ 
+      ClientId: 6d674c0c-5403-4039-af8d-5c8dc6bfddfe, 
+      SystemNameSender: "BorderWiseWeb",  
+      SystemNameRecipient: "BWW.API",  
+      Status: STA,  
+      Data: null,  
+      Type: null,  
+      MachineName: null,  
+      Email: "testmail@ext",  
+      Timestamp: 07/27/2023 09:37:29 
+  }</code></p>
+<ul>
+<li>
+<h3 id="on-receiving-a-message-from-websocket-hub">On Receiving a Message from WebSocket Hub</h3>
+</li>
+</ul>
+<p>Source code URL: <a href="https://devops.wisetechglobal.com/wtg/BorderWise/_git/BorderWiseWeb?path=%2FFrontend%2Fsrc%2Fapp%2Fcore%2Fservices%2Fwebsocket.service.js&amp;version=GBmaster&amp;line=105&amp;lineEnd=153&amp;lineStartColumn=12&amp;lineEndColumn=15&amp;lineStyle=plain&amp;_a=contents">processWebSocketMessageExchange</a> </p>
+<p>WebSocket onMessage event handler is triggered which does further processing of the data received.  </p>
+<p>Sample message
+  <code>{  
+      ClientId: 6d674c0c-5403-4039-af8d-5c8dc6bfddfe, 
+      SystemNameSender: "CargoWiseOne ",  
+      SystemNameRecipient: "BorderWiseWeb",  
+      Status: MSG,  
+      Data: "BorderWiseWeb websocket connected.",  
+      Type: Information,  
+      MachineName: null,  
+      Email: "testmail@ext",  
+      Timestamp: 07/27/2023 09:37:29 
+  }</code></p>
+<ul>
+<li>
+<h3 id="on-error-in-websocket-connection">On Error in WebSocket Connection</h3>
+</li>
+</ul>
+<p>Source Code URL: <a href="https://devops.wisetechglobal.com/wtg/BorderWise/_git/BorderWiseWeb?path=%2FFrontend%2Fsrc%2Fapp%2Fcore%2Fservices%2Fwebsocket.service.js&amp;version=GBmaster&amp;line=73&amp;lineEnd=81&amp;lineStartColumn=16&amp;lineEndColumn=19&amp;lineStyle=plain&amp;_a=contents">onWebSocketConnectionError</a> </p>
+<p>The onError event is fired when there is an error during the WebSocket connection or communication process. This could happen due to various reasons, such as server unavailability, connection disruptions, or protocol errors. If an error is detected during the WebSocket communication, the code generates an error message indicating the client's WebSocket ID (webSocketClientId) and the corresponding event code. </p>
+              
+            </div>
+          </div><footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

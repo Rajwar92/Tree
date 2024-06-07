@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>How to setup dynamic blue tab - Internal Documentation</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "How to setup dynamic blue tab";
+        var mkdocs_page_input_path = "Guides\\How-to-setup-dynamic-blue-tab.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> Internal Documentation
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../about/">About</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">Internal Documentation</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">How to setup dynamic blue tab</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h3 id="dynamicbluetabentry-collection">DynamicBlueTabEntry Collection</h3>
+<p>There is a collection <code>DynamicBlueTabEntry</code> which contains all dynamic blue tab references. To make a tariff tab "dynamic," you need to create a record in this collection:</p>
+<pre><code class="language-json">{
+  &quot;headingLinksCode&quot;: &quot;caDumpings&quot;,
+  &quot;year&quot;: &quot;2022&quot;,
+  &quot;countryCode&quot;: &quot;CA&quot;,
+  &quot;data&quot;: [
+    {
+      &quot;bookCode&quot;: &quot;CA_DMRS&quot;,
+      &quot;fieldName&quot;: &quot;hsCode&quot;,
+      &quot;headingLength&quot;: 4,
+      &quot;rangeSplitter&quot;: &quot; &quot;
+    }
+  ]
+}
+</code></pre>
+<p>Where <code>caDumpings</code> is a code from the <code>TariffTabEntries</code> collection. The <code>DynamicBlueTabEntry</code>'s data array is required to have at least one record that contains parameters to extract "active" headings.</p>
+<h3 id="options">Options</h3>
+<ol>
+<li><strong>BookCode and TOC Title</strong></li>
+<li>
+<p>Used to extract a collection, with the field <code>ref</code> containing heading numbers used in this blue tab.
+   <code>json
+   {
+     "bookCode": "CA_TARIFF_CON_2021_2022",
+     "tocTitle": "HS 2021-HS 2022",
+     "fieldName": "ref",
+     "headingLength": 4
+   }</code></p>
+</li>
+<li>
+<p><strong>Just BookCode</strong></p>
+</li>
+<li>
+<p>Used to extract a collection with the <code>hsCode</code> field.
+   <code>json
+   {
+     "bookCode": "CA_DMRS",
+     "fieldName": "hsCode",
+     "headingLength": 4
+   }</code></p>
+</li>
+<li>
+<p><strong>Direct Collection Name</strong></p>
+</li>
+<li>
+<p>Specify the collection name directly.
+   <code>json
+   {
+     "collectionName": "US_EN_PGA_2022",
+     "fieldName": "ref",
+     "headingLength": 4
+   }</code></p>
+</li>
+<li>
+<p><strong>Filter Query</strong></p>
+</li>
+<li>Option to specify a <code>filterQuery</code> to apply to the collection for extracting headings.
+   <code>json
+   {
+     "collectionName": "ZA_EN_ImportTariff_Schedule1_Parts_2022",
+     "fieldName": "ref",
+     "headingLength": 4,
+     "filterQuery": "{ partNo: 2, part: '2a' }"
+   }</code></li>
+<li><strong>Heading Range Field</strong></li>
+<li>Option to Specify range fields to get 'from' and 'to' values, where 'from' and 'to' is names of fields in the collection:<br />
+<code>{
+     "collectionName": "US_EN_ImportTariff_SectionNotes_AdditionalNotes_Tab_2022",
+     "headingFieldRange": {
+        "from": "headingFrom",
+        "to": "headingTo"
+      }
+   }</code></li>
+<li><strong>Headings List</strong></li>
+<li>Instead of referencing a field in a collection, you can provide a static list of headings.
+   <code>json
+   {
+     "headingLength": 4,
+     "headingsRange": "2710 3826"
+   }</code></li>
+</ol>
+<p>If the <code>data</code> array contains more than one element, they are combined by an "OR" condition:</p>
+<pre><code class="language-json">{
+  &quot;headingLinksCode&quot;: &quot;hsConcordance&quot;,
+  &quot;year&quot;: &quot;2022&quot;,
+  &quot;countryCode&quot;: &quot;US&quot;,
+  &quot;data&quot;: [
+    {
+      &quot;bookCode&quot;: &quot;US_CONCO_HTS_2021_2022&quot;,
+      &quot;tocTitle&quot;: &quot;Concordance HTS 2022-2021&quot;,
+      &quot;fieldName&quot;: &quot;ref&quot;,
+      &quot;headingLength&quot;: 4,
+      &quot;rangeSplitter&quot;: &quot; &quot;
+    },
+    {
+      &quot;bookCode&quot;: &quot;US_CONCO_HTS_2021_2022&quot;,
+      &quot;tocTitle&quot;: &quot;Concordance HTS 2021-2022&quot;,
+      &quot;fieldName&quot;: &quot;ref&quot;,
+      &quot;headingLength&quot;: 4,
+      &quot;rangeSplitter&quot;: &quot; &quot;
+    }
+  ]
+}
+</code></pre>
+<h3 id="dynamic-blue-tabs-update">Dynamic Blue Tabs Update</h3>
+<ul>
+<li>If there is a parameter <code>bookCode</code>, it will update when the corresponding book is updated. Use the book's <code>timestamp</code>.</li>
+<li>If there is no <code>bookCode</code>, the DynamicBlueTab updates once a week.</li>
+<li>To trigger the update, you can unset <code>DynamicBlueTab.timestamp</code> for the corresponding records.</li>
+</ul>
+              
+            </div>
+          </div><footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

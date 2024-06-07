@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>2. Environment Setup - Internal Documentation</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "2. Environment Setup";
+        var mkdocs_page_input_path = "New-Starters\\2.-Environment-Setup.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> Internal Documentation
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../about/">About</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">Internal Documentation</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">2. Environment Setup</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1>Read this first:</h1>
+
+<ul>
+<li>Do <a href="#common-configuration">Common Configuration</a> first, then do specific per-project</li>
+<li>To resolve problems/errors - check out <a href="#troubleshooting">Troubleshooting</a> first</li>
+</ul>
+<h1>Editing this guide</h1>
+
+<ul>
+<li>Avoid duplication of instructions (prefer <a href="#common-configuration">Common Configuration</a>)</li>
+<li>Problem/error solutions go in <a href="#troubleshooting">Troubleshooting</a> (to keep main instructions concise)</li>
+</ul>
+<p>[[<em>TOC</em>]]</p>
+<h1 id="common-configuration">Common Configuration</h1>
+<h2 id="front-end-fe">Front-End (FE)</h2>
+<p>Note: you might want to use <a href="https://devops.wisetechglobal.com/wtg/BorderWise/_git/DevTools?path=%2Ftools%2Ffrontend-setup">frontend-setup</a> script to automate the setup.</p>
+<p>This is a pre-requisite for working on all FE projects:</p>
+<ol>
+<li>Install <a href="https://code.visualstudio.com/download">VS Code</a></li>
+<li><a href="https://learn.microsoft.com/en-gb/windows/wsl/install#install-wsl-command">Install WSL</a> (<a href="https://learn.microsoft.com/en-us/windows/wsl/install-on-server#enable-the-windows-subsystem-for-linux">enable it</a> first if needed)</li>
+<li>In <code>cmd</code> run <code>wsl --set-default-version 2</code> - ensure WSL v2 will be used by default. <a href="https://learn.microsoft.com/en-us/windows/wsl/install#upgrade-version-from-wsl-1-to-wsl-2">Learn more</a></li>
+<li>Install <a href="https://apps.microsoft.com/store/detail/ubuntu/9PDXGNCFSCZV">Ubuntu</a> on WSL; <a href="https://ubuntu.com/wsl">Learn mode</a></li>
+<li>Ensure your Ubuntu installation is actually using WSL v2 and not v1, run <code>wsl -l -v</code> in Windows <code>cmd</code>, if not v2 - migrate it to v2.</li>
+<li><code>sudo apt update &amp;&amp; sudo apt upgrade -y</code> - update everything</li>
+<li><a href="https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-wsl">Install</a> "Remote - WSL" extension in VS Code; it should be installed automatically if you've installed all recommended plugins; <a href="https://code.visualstudio.com/docs/remote/wsl-tutorial">Tutorial</a></li>
+<li>Install <a href="https://github.com/nvm-sh/nvm">nvm</a> inside WSL. This will let you run <code>nvm install</code> to install required NodeJS version (also see <code>package.json</code>'s <code>engines</code> section for currently supported NodeJS and NPM versions).</li>
+<li>In order for VS Code to use WSL version of Node and NPM (for example, to run jest tests in watch mode), create <code>~/.vscode-server/server-env-setup</code> file in WSL, with the following contents (taken from <code>~/.bashrc</code>, <a href="https://github.com/jest-community/vscode-jest/issues/105#issuecomment-710756585">credit</a>):
+   <code>export NVM_DIR="$HOME/.nvm"
+   [ -s "$NVM_DIR/nvm.sh" ] &amp;&amp; \. "$NVM_DIR/nvm.sh"  # This loads nvm</code></li>
+<li>(Skip for UMP) Make sure that GUI apps work (for Cypress)</li>
+<li>Try to run <code>sudo apt install x11-apps &amp;&amp; xcalc</code>, if you see a calculator - skip further steps.</li>
+<li>You can try using <a href="https://learn.microsoft.com/en-us/windows/wsl/tutorials/gui-apps">WSLg</a> which is enabled by default, but make sure you're using the latest WSL (run <code>wsl --update</code>), see also <a href="#wslg-doesn't-work">"WSLg doesn't work"</a>. If now you can see calculator when running <code>xcalc</code> - skip further steps</li>
+<li>Alternatively, follow <a href="https://shouv.medium.com/how-to-run-cypress-on-wsl2-989b83795fb6">this guide</a> (ignore <code>dbus</code>-related stuff), also <a href="https://gist.github.com/pjobson/6b9fb926c59f58aa73d4efa10fe13654">this guide</a> might be helpful. Here's a short version:<ol>
+<li><code>apt-get install libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb</code></li>
+<li>Install <a href="https://sourceforge.net/projects/vcxsrv/">VcXsrv</a>; See also: <a href="https://devops.wisetechglobal.com/wtg/BorderWise/_wiki/wikis/BorderWise.wiki?wikiVersion=GBwikiMaster&amp;_a=edit&amp;pagePath=%2FNew%20Starters%2F2.%20Environment%20Setup&amp;pageId=2918&amp;anchor=can%27t-download-vcxsrv-from-the-office-network">Can't download VcXsrv from the office network</a></li>
+<li>Run <code>XLaunch</code>, make sure "Disable access control" is checked on the "Extra settings" screen; Save config and add to autorun, or do it every time manually.</li>
+<li>Add this to the end of <code>~/.bashrc</code> file:
+     <code># set DISPLAY variable to the IP automatically assigned to WSL2
+     export DISPLAY=$(cat /etc/resolv.conf | grep nameserver | awk '{print $2; exit;}'):0.0</code></li>
+<li>Relaunch terminal and/or VS Code</li>
+<li>Add firewall rule for <code>VcXsrv.exe</code>, allow all inbound connections</li>
+<li>Run <code>xcalc</code> again to confirm that GUI apps work now</li>
+</ol>
+</li>
+</ol>
+<h2 id="back-end-be">Back-end (BE)</h2>
+<p><em>This is a draft by FE guy, please someone who does BE improve this section</em></p>
+<ol>
+<li>Quick Get Latest (QGL)</li>
+<li>Visual Studio v17.6.5, DotNet SDK v7.0.306 from Software Center</li>
+<li>Latest PostgreSQL + pgAdmin 4 might be required (for WW, for example)</li>
+<li>Studio 3T might be useful for BWW</li>
+</ol>
+<h1 id="borderwise-web-bww">BorderWise Web (BWW)</h1>
+<h2 id="bww-fe">BWW FE</h2>
+<p><strong>Note</strong>: all commands in this section are supposed to be run inside of your WSL Ubuntu terminal</p>
+<p>Pre-req:</p>
+<ol>
+<li>Follow <a href="#front-end-(fe)">Common Configuration for FE</a></li>
+<li><code>~$ git clone --config core.autocrlf=false https://devops.wisetechglobal.com/wtg/BorderWise/_git/BorderWiseWeb</code></li>
+</ol>
+<p>If you're NOT planning to use local BE (easy):</p>
+<ol>
+<li><code>~/BorderWiseWeb/Frontend/src$ cp .env.example .env</code> - create <code>BorderWiseWeb/Frontend/src/.env</code> file by copying <code>.env.example</code> in it</li>
+<li>In <code>.env</code> file uncomment <code># HTTP_SERVER_API_HOST="https://app-alpha.borderwise.com"</code> line (remove <code>#</code> at the start of the line)</li>
+</ol>
+<p>If you're planning to use local BE (hard):</p>
+<ol>
+<li><code>~$ echo "export WSL_HOST_IP=\$(awk '/nameserver/ { print \$2 }' /etc/resolv.conf)" &gt;&gt; ~/.bashrc</code></li>
+<li>Add firewall rule in Windows:
+   Allow Inbound for TCP Port <code>40135</code>:</li>
+<li>Open "Start" menu</li>
+<li>Search for <code>Windows Defender Firewall with Advanced Security</code></li>
+<li>Select "Inbound Rules"</li>
+<li>Click "New Rule..."<ul>
+<li>Rule Type: <code>Port</code></li>
+<li>Protocol and Ports:<ul>
+<li><code>TCP</code></li>
+<li>Specific local ports: <code>40135</code></li>
+</ul>
+</li>
+<li>Action: <code>Allow the connection</code></li>
+<li>Profile:<ul>
+<li>[x] Domain (not enough, because Windows won't recognize the VPN as a corporate domain)</li>
+<li>[x] Private</li>
+<li>[x] Public</li>
+</ul>
+</li>
+<li>Name: <code>BWW</code></li>
+</ul>
+</li>
+<li>Build BE using QGL, open BorderWise solution in VS and run <code>WebApi</code>:
+   <img alt="image.png" src="/.attachments/image-f251dfa9-4900-4944-9eea-9b662353691c.png" />; see <a href="#bww-be">BE guide</a> for details.</li>
+</ol>
+<p>After that:</p>
+<ol>
+<li><code>~$ code ~/BorderWiseWeb/Frontend/BorderWiseWeb-Frontend.code-workspace</code></li>
+<li><code>~$ wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb &amp;&amp; sudo apt install ./google-chrome-stable_current_amd64.deb &amp;&amp; rm google-chrome-stable_current_amd64.deb</code> - download and install Chrome, required for Jasmine</li>
+<li><code>~/BorderWiseWeb/Frontend/src$ nvm i</code> - use required node version; normally this command will run automatically every time you open integrated terminal, but may not run straight away when you first open the project, either run it manually or open another integrated terminal</li>
+<li><code>~/BorderWiseWeb/Frontend/src$ npm ci</code> - installs deps for <code>src</code> and <code>vue-elements</code> in one go</li>
+<li>Make sure that API is running locally or that <code>.env</code> has appropriate remote API uncommented</li>
+<li><code>~/BorderWiseWeb/Frontend/src$ npm start</code> - will run local dev server, rebuild <code>src</code> and <code>vue-elements</code> on file changes</li>
+</ol>
+<h2 id="bww-be">BWW BE</h2>
+<p>Refer to <a href="https://wisetechglobal.sharepoint.com/sites/StackOverflow/questions/Forms/AllItems.aspx?id=%2Fsites%2FStackOverflow%2Fquestions%2F9671%2Emd&amp;parent=%2Fsites%2FStackOverflow%2Fquestions">How do I set up BorderWise Web backend locally?</a></p>
+<p>To interact with the MongoDB database, set up Studio3T by following <a href="https://wisetechglobal.sharepoint.com/sites/StackOverflow/questions/Forms/AllItems.aspx?id=%2Fsites%2FStackOverflow%2Fquestions%2F10884%2Emd&amp;parent=%2Fsites%2FStackOverflow%2Fquestions">How do I set up Studio 3T for BorderWise Web?</a></p>
+<h1 id="webwatcher-ww">WebWatcher (WW)</h1>
+<h2 id="ww-fe">WW FE</h2>
+<p>Pre-req:</p>
+<ol>
+<li>Follow <a href="#front-end-(fe)">Common Configuration for FE</a></li>
+<li><code>~$ git clone https://devops.wisetechglobal.com/wtg/BorderWise/_git/WebWatcher</code></li>
+</ol>
+<p>If you're NOT planning to use local BE (easy):</p>
+<ol>
+<li><code>~/WebWatcher/Frontend$ cp .env.example .env</code> - create <code>WebWatcher/Frontend/.env</code> file by copying <code>.env.example</code> in it</li>
+<li>In <code>.env</code> file uncomment <code># HTTP_SERVER_API_HOST="https://webwatcher-test.wtg.zone"</code> line (remove <code>#</code> at the start of the line)</li>
+</ol>
+<p>If you're planning to use local BE (hard):</p>
+<ol>
+<li><code>~$ echo "export WSL_HOST_IP=\$(awk '/nameserver/ { print \$2 }' /etc/resolv.conf)" &gt;&gt; ~/.bashrc</code></li>
+<li>Add firewall rule in Windows:
+   Allow Inbound for TCP Port <code>5001</code>:</li>
+<li>Open "Start" menu</li>
+<li>Search for <code>Windows Defender Firewall with Advanced Security</code></li>
+<li>Select "Inbound Rules"</li>
+<li>Click "New Rule..."<ul>
+<li>Rule Type: <code>Port</code></li>
+<li>Protocol and Ports:<ul>
+<li><code>TCP</code></li>
+<li>Specific local ports: <code>5001</code></li>
+</ul>
+</li>
+<li>Action: <code>Allow the connection</code></li>
+<li>Profile:<ul>
+<li>[x] Domain (not enough, because Windows won't recognize the VPN as a corporate domain)</li>
+<li>[x] Private</li>
+<li>[x] Public</li>
+</ul>
+</li>
+<li>Name: <code>WW</code></li>
+</ul>
+</li>
+<li>Build BE using QGL, open WebWatcher solution in VS and run <code>WebApi</code>:
+   <img alt="image.png" src="/.attachments/image-f251dfa9-4900-4944-9eea-9b662353691c.png" />; see <a href="#ww-be">BE guide</a> for details.</li>
+</ol>
+<p>After that:</p>
+<ol>
+<li><code>~$ code ~/WebWatcher/Frontend/WebWatcher-Frontend.code-workspace</code></li>
+<li><code>~/WebWatcher/Frontend$ nvm i</code> - use required node version;</li>
+<li><code>~/WebWatcher/Frontend$ npm ci</code> - installs deps</li>
+<li>Make sure that API is running locally or that <code>.env</code> has appropriate remote API uncommented</li>
+<li><code>~/WebWatcher/Frontend$ npm start</code> - will run local dev server</li>
+</ol>
+<h2 id="ww-be">WW BE</h2>
+<ol>
+<li>Clone and build the <a href="https://devops.wisetechglobal.com/wtg/BorderWise/_git/WebWatcher">Web Watcher repo</a> using QGL</li>
+<li>Set up your local database by following <a href="https://wisetechglobal.sharepoint.com/sites/StackOverflow/questions/Forms/AllItems.aspx?id=%2Fsites%2FStackOverflow%2Fquestions%2F11152%2Emd&amp;parent=%2Fsites%2FStackOverflow%2Fquestions">this SO post</a></li>
+</ol>
+<h3 id="ww-scheduler-be">WW Scheduler (BE)</h3>
+<p>Only needed for debugging content scraping/processing, and isn't required to run API.</p>
+<ol>
+<li>Install <a href="https://devops.wisetechglobal.com/wtg/BorderWise/_wiki/wikis/BorderWise.wiki/5154/Docker-(podman)">Podman in WSL2</a></li>
+<li>Find current <code>selenium/standalone-chrome</code> version <a href="https://devops.wisetechglobal.com/wtg/BorderWise/_git/WebWatcher?path=%2FDeployment%2FDeployment%2FConfigurationFactory.cs&amp;version=GBmaster&amp;line=164&amp;lineEnd=164&amp;lineStartColumn=415&amp;lineEndColumn=420&amp;lineStyle=plain&amp;_a=contents">here</a></li>
+<li>Run Selenium Grid Docker image in WSL2 (replace <code>CURRENT_VERSION_FROM_PREVIOUS_STEP</code>): 
+<code>docker run -d -e SE_NODE_MAX_SESSIONS=24 -e SE_NODE_OVERRIDE_MAX_SESSIONS=true --restart always -p 4444:4444 --shm-size=2g --name selenium selenium/standalone-chrome:CURRENT_VERSION_FROM_PREVIOUS_STEP</code></li>
+</ol>
+<h1 id="user-management-portal-ump">User Management Portal (UMP)</h1>
+<h2 id="ump-fe">UMP FE</h2>
+<p>Pre-req:</p>
+<ol>
+<li>Follow <a href="#front-end-(fe)">Common Configuration for FE</a></li>
+<li><code>~$ git clone https://devops.wisetechglobal.com/wtg/BorderWise/_git/UMP</code></li>
+<li><code>~/UMP/Frontend$ cp .env.example .env</code> - create <code>UMP/Frontend/.env</code> file by copying <code>.env.example</code> in it</li>
+</ol>
+<p>If you're NOT planning to use local BE (easy):</p>
+<ol>
+<li>In <code>.env</code> file uncomment <code># HTTP_SERVER_API_HOST="https://ump-test1.borderwise.com"</code> line (remove <code>#</code> at the start of the line)</li>
+</ol>
+<p>If you're planning to use local BE (hard):</p>
+<ol>
+<li><code>~$ echo "export WSL_HOST_IP=\$(awk '/nameserver/ { print \$2 }' /etc/resolv.conf)" &gt;&gt; ~/.bashrc</code></li>
+<li>In <code>~/UMP/Frontend/.env</code> file uncomment <code># HTTP_SERVER_API_HOST="https://localhost:5002"</code> line (remove <code>#</code> at the start of the line)</li>
+<li>Add firewall rule in Windows:
+   Allow Inbound for TCP Port <code>5002</code>:</li>
+<li>Open "Start" menu</li>
+<li>Search for <code>Windows Defender Firewall with Advanced Security</code></li>
+<li>Select "Inbound Rules"</li>
+<li>Click "New Rule..."<ul>
+<li>Rule Type: <code>Port</code></li>
+<li>Protocol and Ports:<ul>
+<li><code>TCP</code></li>
+<li>Specific local ports: <code>5002</code></li>
+</ul>
+</li>
+<li>Action: <code>Allow the connection</code></li>
+<li>Profile:<ul>
+<li>[x] Domain (not enough, because Windows won't recognize the VPN as a corporate domain)</li>
+<li>[x] Private</li>
+<li>[x] Public</li>
+</ul>
+</li>
+<li>Name: <code>UMP</code></li>
+</ul>
+</li>
+<li>Build BE using QGL, open UMP solution in VS and run <code>Ump</code>; see <a href="#ump-be">BE guide</a> for details.</li>
+</ol>
+<p>After that:</p>
+<ol>
+<li><code>~$ code ~/UMP/Frontend</code></li>
+<li><code>~/UMP/Frontend$ nvm i</code> - use required node version;</li>
+<li><code>~/UMP/Frontend$ npm ci</code> - installs deps</li>
+<li>Make sure that API is running locally or that <code>.env</code> has appropriate remote API uncommented</li>
+<li><code>~/UMP/Frontend$ npm start</code> - will run local dev server</li>
+</ol>
+<h2 id="ump-be">UMP BE</h2>
+<p>Refer to <a href="https://wisetechglobal.sharepoint.com/sites/StackOverflow/questions/Forms/AllItems.aspx?id=%2Fsites%2FStackOverflow%2Fquestions%2F9758%2Emd&amp;parent=%2Fsites%2FStackOverflow%2Fquestions">How do I set up BorderWise UMP API locally?</a></p>
+<hr />
+<h1 id="troubleshooting">Troubleshooting</h1>
+<h2 id="garbled-terminal-prompt-in-wsl">Garbled terminal prompt in WSL</h2>
+<p>After installation, you may encounter an issue where you get a garbled terminal prompt instead of a user setup screen. If you do, follow these steps:</p>
+<ol>
+<li>Close + Re-Open Ubuntu. You should be logged in as root</li>
+<li>Run <code>adduser &lt;yourNewUsername&gt;</code>, you will be asked to set a password. Press enter to skip the other fields.</li>
+<li>Add your new user to the sudo users group with the following command: <code>usermod -aG sudo &lt;yourNewUsername&gt;</code></li>
+<li>Run <code>nano /etc/wsl.conf</code>, add the following text and save your changes:
+   <code>[user]
+   default=&lt;yourNewUsername&gt;</code></li>
+<li>Close + re-open Ubuntu. You should now be logged in as your new user by default</li>
+</ol>
+<h2 id="vs-code-asks-do-you-allow-this-workspace-to-modify-your-terminal-shell">VS Code asks "Do you allow this workspace to modify your terminal shell?"</h2>
+<p>When prompted "Do you allow this workspace to modify your terminal shell?" - allow, this will set handy env vars, such as <code>PATH=$PATH:./node_modules/.bin</code></p>
+<h2 id="vs-code-asks-do-you-trust-the-authors-of-the-files-in-this-workspace">VS Code asks "Do you trust the authors of the files in this workspace?"</h2>
+<p>When you see something like this - choose "Yes, I trust the authors", otherwise you'll have a pretty bad experience.</p>
+<h2 id="network-related-issues">Network-related issues</h2>
+<p>Make sure you're using WSL 2 and not WSL 1, check this by running <code>wsl -l -v</code> in <code>cmd</code>. See <a href="https://learn.microsoft.com/en-us/windows/wsl/install#upgrade-version-from-wsl-1-to-wsl-2">how to migrate</a>.</p>
+<h2 id="building-fe-in-qgl-takes-too-long">Building FE in QGL takes too long</h2>
+<p>FE projects aren't meant to be built using QGL on developer machines. We only support QGL as a necessity to be able to build FE on DAT. If you are doing FE development - don't use QGL to build FE. Most of the time all you need it <code>nvm i &amp;&amp; npm ci &amp;&amp; npm start</code>, see more details in guides above.</p>
+<h2 id="cant-find-qgl">Can't find QGL</h2>
+<p>It's normally downloaded by Crikey, see <a href="https://wisetechglobal.sharepoint.com/sites/StackOverflow/questions/Forms/AllItems.aspx?id=%2Fsites%2FStackOverflow%2Fquestions%2F2733%2Emd&amp;parent=%2Fsites%2FStackOverflow%2Fquestions">How to install Crikey Monitor manually?</a> or <a href="https://wisetechglobal.sharepoint.com/sites/StackOverflow/questions/Forms/AllItems.aspx?id=%2Fsites%2FStackOverflow%2Fquestions%2F2630%2Emd&amp;parent=%2Fsites%2FStackOverflow%2Fquestions">How to get QGL for Git without QGL for Git?</a></p>
+<h2 id="errors-installing-java">Errors installing Java</h2>
+<p>If you experience dependencies errors when installing <code>default-jdk</code>, try to execute <code>~$ sudo apt --fix-broken install</code>.
+To verify <code>Java</code> is correctly installed use <code>~$ java -version</code> in WSL Ubuntu terminal.</p>
+<h2 id="cant-download-chrome">Can't download Chrome</h2>
+<p>You can find the current URL <a href="https://www.chromium.org/getting-involved/dev-channel/">here</a> in the "Linux" -&gt; "Stable channel" section</p>
+<h2 id="running-cypress-has-error-the-test-runner-unexpectedly-exited-via-a-exit-event-with-signal-sigsegv">Running Cypress has error: "The Test Runner unexpectedly exited via a exit event with signal SIGSEGV"</h2>
+<p>If you run into this error and still use the old <code>VcXsrv</code> approach to rendering GUI Apps in WSL, it's probably better to update your WSL now that GUI Apps are supported out of the box:</p>
+<ol>
+<li>Run powershell as admin, then run the command <code>wsl --update</code></li>
+<li>Once updated, remove these lines from your <code>.bashrc</code> in your Ubuntu home directory: </li>
+</ol>
+<pre><code># set DISPLAY variable to the IP automatically assigned to WSL2
+export DISPLAY=$(cat /etc/resolv.conf | grep nameserver | awk '{print $2; exit;}'):0.0
+sudo /etc/init.d/dbus start &amp;&gt; /dev/null
+</code></pre>
+<p>Afterwards ensure that <code>VcXsrv</code> AKA Windows X Server or XLaunch is no longer running in Windows. You can even uninstall it since we won't be using it anymore.</p>
+<h2 id="cant-connect-to-myaccount-portalcargowisecom-from-local-be">Can't connect to myaccount-portal.cargowise.com from local BE</h2>
+<p>Refer to <a href="https://wisetechglobal.sharepoint.com/sites/StackOverflow/questions/Forms/AllItems.aspx?id=%2Fsites%2FStackOverflow%2Fquestions%2F13088%2Emd&amp;parent=%2Fsites%2FStackOverflow%2Fquestions">Can't connect to myaccount-portal.cargowise.com from local BE</a>.</p>
+<h2 id="wslg-doesnt-work">WSLg doesn't work</h2>
+<p>If you're using new default X server - https://github.com/microsoft/wslg and when you do <code>echo $DISPLAY</code> it doesn't say <code>:0</code> - you might have it disabled, check the config <code>c:\users\MyUser\.wslconfig</code>:</p>
+<pre><code>[wsl2]
+guiApplications=true
+</code></pre>
+<p>see https://github.com/microsoft/wslg#wslg-system-distro for details.</p>
+<h2 id="cant-download-vcxsrv-from-the-office-network">Can't download VcXsrv from the office network</h2>
+<p>Sourceforge.net seems to be blocked by the office network. You can find VcXsrv (WSLg replacement) in this network share: <code>\\datfiles.wtg.zone\ThirdParty\Web\BorderWise\VcXsrv</code></p>
+<h2 id="wsl-wont-start-after-install">WSL won't start after install</h2>
+<p>After you install WSL and attempt to launch Ubuntu, you might get an error after some time instead of a command prompt. It can be solved by making sure these Windows Features are enabled: Hyper-V and Virtual Machine Platform (Windows Hypervisor Platform might help as well).
+These errors look like this:</p>
+<pre><code>Error code: Wsl/Service/CreateInstance/CreateVm/WSL_E_VIRTUAL_MACHINE_PLATFORM_REQUIRED
+Error code: Wsl/Service/CreateInstance/CreateVm/ConfigureNetworking/HNS/0x80070424
+</code></pre>
+              
+            </div>
+          </div><footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

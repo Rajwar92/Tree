@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>Vue+Vuetify migration from AngularJS - Internal Documentation</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Vue+Vuetify migration from AngularJS";
+        var mkdocs_page_input_path = "Guides\\Vue+Vuetify-migration-from-AngularJS.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> Internal Documentation
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../about/">About</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">Internal Documentation</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Vue+Vuetify migration from AngularJS</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <p>When adding new features or migrating old components to Vue consider creating/migrating them straight to Vuetify.</p>
+<p>We're using:
+- Vue 3 (<a href="https://vuejs.org/guide/introduction.html">docs</a>) - framework, replacement for AngualrJS
+- TSX (<a href="https://devops.wisetechglobal.com/wtg/BorderWise/_git/WebWatcher?path=%2FFrontend%2FVue-components.md&amp;_a=preview">why and how</a>) - templating language, replacement for HTML
+- Vuetify 3 (<a href="https://next.vuetifyjs.com/en/">docs</a> - not the ones from Google results!) - UI library, a replacement for Bootstrap
+- Material Design (<a href="https://m3.material.io/">docs</a>) - design system, a replacement for Bootstrap's design system</p>
+<p>The app design may slightly change when migrating to be in line with the Material Design system, and we need to put a bit of effort into that during the design phase, please consult with Maxim Mazurok (Material Design expert), especially at first while we build the foundation and set examples. Reach out to him with any questions or concerns.</p>
+<h2 id="tsx">TSX</h2>
+<p>TSX (TypeScript+JSX) is slightly different from the HTML used in most examples in Vuetify docs.</p>
+<p>Here is a basic example of how to translate them:</p>
+<pre><code class="language-html">&lt;v-list lines=&quot;one&quot;&gt;
+  &lt;v-list-item
+    v-for=&quot;item in items&quot;
+    :key=&quot;item.title&quot;
+    :title=&quot;item.title&quot;
+    subtitle=&quot;...&quot;
+  &gt;&lt;/v-list-item&gt;
+&lt;/v-list&gt;
+</code></pre>
+<p>in TSX will look like this:</p>
+<pre><code class="language-tsx">&lt;VList lines=&quot;one&quot;&gt;
+  {items.map((item) =&gt; (
+    &lt;VListItem
+      key={item.title}
+      title={item.title}
+      subtitle=&quot;...&quot;
+    /&gt;
+  ))}
+&lt;/VList&gt;
+</code></pre>
+<p>Check existing code that uses Vuetify components for more examples. </p>
+<p>See https://github.com/vuejs/babel-plugin-jsx#slot when something doesn't work, especially slots, etc.</p>
+<h2 id="icons">Icons</h2>
+<p>FontAwesome icons need to be replaced by Material Design Icons.</p>
+<p>We're using <a href="https://www.npmjs.com/package/@mdi/js">@mdi/js</a> to get icons.</p>
+<p>Search for icons here: https://pictogrammers.com/library/mdi/</p>
+<p>Prefer icons with "Created by Google" badge:
+<img alt="image.png" src="/.attachments/image-be9476f0-d027-4092-99a1-aa39251aa629.png =300x" /></p>
+<p>Icons don't have to look the same as the old ones, aim for the best match by meaning.</p>
+<p>For example,
+We had this icon: <img alt="image.png" src="/.attachments/image-36463d3d-b699-428d-afa6-cb77836083c1.png" />
+Now we use this one: <img alt="image.png" src="/.attachments/image-a22c1255-cbc0-4cac-8d2a-9b8e032da9cb.png" />
+You can see they don't match exactly, however, they both have the same meaning: "history".</p>
+<p>We currently have "Quick Links":
+<img alt="image.png" src="/.attachments/image-f7522030-21f0-4f25-9818-15771deaf94d.png" />
+Let's search for "quick":
+<img alt="image.png" src="/.attachments/image-5d5939ee-5edc-4f5a-901f-97865b8441a5.png" />
+Nothing has a matching meaning.
+Let's search for "links": no results;
+Let's search for "link":
+This is a pretty good candidate, because it's a link icon - good way to represent links. And it's created by Google:
+<img alt="image.png" src="/.attachments/image-7e031638-dd52-4377-9991-a30cc299580a.png" />
+However, usually it's used to represent a single link, maybe on a button to copy/open that link. In our case it's a dropdown of links collection, so probably not the best match on a meaning.
+Current icon name is <code>fa-flash</code>:
+<img alt="image.png" src="/.attachments/image-79b53413-0af8-4669-ba69-0c5bef67e212.png" />
+Let's search for "flash":
+<img alt="image.png" src="/.attachments/image-5184086b-c928-42c8-b101-352586b73d20.png" />
+This is a pretty good match. It is created by google, similar to our current icon, and matches by meaning because the purpose of quick links is to be quickly accessible (quick as a flash), so this seems like a very good choice.</p>
+<hr />
+<p><img alt="vuetify-progression-Page-1.drawio.png" src="/.attachments/vuetify-progression-Page-1.drawio-799a1cb0-c817-4f12-818f-6a402e8912fc.png" /></p>
+              
+            </div>
+          </div><footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>Test rigs in BorderWise - Internal Documentation</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Test rigs in BorderWise";
+        var mkdocs_page_input_path = "Guides\\Test-rigs-(UATs)-in-BorderWise.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> Internal Documentation
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../about/">About</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">Internal Documentation</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Test rigs in BorderWise</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="test-rigs-in-borderwise">Test rigs in BorderWise</h1>
+<p>In BWW we have now dynamic test rigs. This guide is intended for new BorderWise product team members AND developers wishing to have their code functionally tested.</p>
+<h1 id="how-do-i-create-a-test-rig-for-borderwise">How do I create a test rig for BorderWise?</h1>
+<p>The steps below outline how to include the test rig template in a SHV or UAT task.</p>
+<ol>
+<li>
+<p>Create a new SHV task</p>
+</li>
+<li>
+<p>The task can either be assigned to the developer or to yourself (if you wish to be notified of the status of the build)</p>
+</li>
+<li>
+<p>Paste in the Pull Request URL as the first line inside task notes</p>
+</li>
+<li>
+<p>Right click in the Task Notes box.</p>
+</li>
+<li>
+<p>Select Insert Template &gt; “BorderWise UAT”. </p>
+</li>
+</ol>
+<p><img alt="1.png" src="/.attachments/1-f67f1ccc-152c-4639-a899-64d06fedc78f.png" /></p>
+<ol>
+<li>
+<p>Change the task type depending on the situations outlined below, then press save.</p>
+<ul>
+<li><strong>SH0</strong> – if you require the unit tests to be run as well as the test rig to be created. If no test-rig parameter is provided in task notes, DAT runs unit tests only.</li>
+<li><strong>UA0 –</strong> if you just want to build the test rig (test-rig parameter is mandatory).</li>
+</ul>
+</li>
+<li>
+<p>The UAT link passed in task note is used to create the container name during frontend and backend deployment. The UAT link pattern as per different projects is as below:</p>
+<ul>
+<li>BorderWise UAT: <code>https://{WorkItemNumber}.app-uat.borderwise.com</code></li>
+<li>WebWatcher UAT: <code>https://webwatcher-{WorkItemNumber}.app-uat.borderwise.com</code></li>
+<li>UMP UAT: <code>https://ump-{WorkItemNumber}.app-uat.borderwise.com</code></li>
+</ul>
+</li>
+</ol>
+<p>If there are multiple workflows under your work item for which if a developer needs to SH0 or UA0, then the developer should make sure workitemnumber value passed in UAT link in the task note is unique. Otherwise, deployment will override the container. To make the value unique, the developer can append suffixes such as: <code>https://{WorkItemNumber}{WorkflowNumber}.app-uat.borderwise.com</code></p>
+<ol>
+<li>
+<p>When the build is complete, the UAT link in SH0/UA0 task will become active.</p>
+</li>
+<li>
+<p>You can also use Crikey Test Results page to access details of the test rig deployment. BorderWise application is deployed as package where frontend and backend are deployed together in test rig. Frontend ports range from 401 to 449 and Backend range from 301 to 349</p>
+</li>
+</ol>
+<p>a. From the Crikey test results under BorderWise/BorderWiseWeb/DynamicTestRigDeployment, copy the WebApi Url to access backend</p>
+<p><img alt="2.png" src="/.attachments/2-ffb3b76a-3c2b-4f25-bbdc-2d001150e641.png" /></p>
+<p>b. From the Crikey test results under BorderWise/BorderWiseWeb/DynamicTestRigDeployment, copy the front-end url to access the BorderWise application</p>
+<p><img alt="3.png" src="/.attachments/3-71362ebd-52f0-455b-8d2e-59c985e513cc.png" /></p>
+<ol>
+<li>If there are changes in both BorderWise and UMP, we can set up both applications. Include the UAT URLs for both applications in the task notes in Step 5 and refer to the screenshot below for guidance.</li>
+</ol>
+<p><img alt="4.png" src="/.attachments/4-5f227b81-c992-4c6a-99a4-985301941a52.png" /></p>
+<p>Alternatively, if there is only a change in BorderWise but you want it to connect to the Custom UAT test rig, you can provide the <code>UMP UAT: {URL}</code> for BW to connect to. If no UMP UAT URL is mentioned, BorderWise will connect to <code>UMPBaseUrl</code> from appsettings.UAT.json</p>
+<p>Click <a href="https://wisetechglobal.sharepoint.com/sites/StackOverflow/Articles/Forms/AllItems.aspx?id=%2Fsites%2FStackOverflow%2FArticles%2F11988%2Emd&amp;parent=%2Fsites%2FStackOverflow%2FArticles">here</a> to see the original article on this topic.</p>
+              
+            </div>
+          </div><footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

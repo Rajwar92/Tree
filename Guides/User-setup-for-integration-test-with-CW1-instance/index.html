@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>User setup for integration test with CW1 instance - Internal Documentation</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "User setup for integration test with CW1 instance";
+        var mkdocs_page_input_path = "Guides\\User-setup-for-integration-test-with-CW1-instance.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> Internal Documentation
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../about/">About</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">Internal Documentation</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">User setup for integration test with CW1 instance</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <ol>
+<li>
+<p>Launch CW1 instance (either test-rigs on SAND or CW1Alpha on Corp or your local CW1 instance) and login as cw1Support.
+<img alt="image.png" src="/.attachments/image-884ae92b-4e61-4ec0-b63a-77fc89009ccc.png" /></p>
+</li>
+<li>
+<p>Open Staff and Resources module, select any user from Recent items. In case there is no record in recent items, then you could search any staff with Active status to true; 
+<img alt="image.png" src="/.attachments/image-ec01c5dc-3b1d-4d48-9606-9d6afc997f7b.png" /></p>
+</li>
+<li>
+<p>Modify user's password and email address; The login name is the one used to login CW1 instance. Email should be same as the existing email in UMP (production / test) depends on which env you want to test with. 
+<img alt="image.png" src="/.attachments/image-7aced653-1692-4f36-b830-9376e0626747.png" /></p>
+</li>
+</ol>
+<p>Password is used for CW1 login
+<img alt="image.png" src="/.attachments/image-6e11b932-9ebe-4b58-9016-3dc441c65336.png" /></p>
+<ol>
+<li>
+<p>Set up Security Rights -&gt; give permission to access custom files
+<img alt="image.png" src="/.attachments/image-2d2034a7-7910-422a-91a5-ff4d00042529.png" /></p>
+</li>
+<li>
+<p>Save</p>
+</li>
+<li>
+<p>If you want to test features for UMP, then<br />
+Open registry -&gt; set up "BorderWise UMP API Base Address", overide the default value with your test rig url<br />
+<img alt="image.png" src="/.attachments/image-542bedf4-23a3-4ed9-b24d-6fc697f9aafb.png" /></p>
+</li>
+<li>
+<p>If you want to test features for BW, then do the same thing for "BorderWise Web Address". Sometime you need to change both fields
+<img alt="image.png" src="/.attachments/image-f886bb83-3752-4131-9e3f-d5527e236bb4.png" /></p>
+</li>
+<li>
+<p>Save and login as new user, then use the login name and password to login.
+<img alt="image.png" src="/.attachments/image-0b1635f8-f0cc-4043-912e-e42da5f4b8cf.png" /></p>
+</li>
+<li>
+<p>If you override the ump API base address with your test rig URL and are wanting autologin to take you to a BW test rig, you will need to update the autologin url in appsettings in your UMP UAT</p>
+</li>
+<li>
+<p>You should be able to connect BW via autologin now.</p>
+</li>
+</ol>
+              
+            </div>
+          </div><footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

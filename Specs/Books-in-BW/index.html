@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>Terminology and Types - Internal Documentation</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Terminology and Types";
+        var mkdocs_page_input_path = "Specs\\Books-in-BW.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> Internal Documentation
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../about/">About</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">Internal Documentation</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Terminology and Types</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="terminology-and-types">Terminology and Types</h1>
+<h2 id="planbook">PlanBook</h2>
+<p><a href="https://devops.wisetechglobal.com/wtg/BorderWise/_git/BorderWiseWeb?path=%2FBackend%2FWebApi%2FCore%2FModels%2FPlanBook.cs&amp;_a=contents&amp;version=GBmaster">Plan books</a> are a book type that represents books within a <a href="https://devops.wisetechglobal.com/wtg/BorderWise/_git/BorderWiseWeb?path=%2FBackend%2FWebApi%2FCore%2FModels%2FPlan.cs&amp;_a=contents&amp;version=GBmaster">Plan</a> in the Plans collection. The Plans collection is made up of a bunch of 'Plans', each corresponding to a particular country (NOTE: one is global). Each 'Plan' contains a list of books. Thus, each plan book either belongs to a particular country plan (e.g Singapore (SG)) or the global plan (GB). The plan collection contains all the books found in the BorderWise library (as can be seen in the library tab).
+<img alt="PlansCollection.png" src="/.attachments/PlansCollection-2b90aa0a-2dd2-4a81-ab5a-f00d4875438a.png =950x" /> <img alt="LibraryTab.png" src="/.attachments/LibraryTab-63046bfd-0dd5-4339-b4bc-0a2fffb92dc9.png" /></p>
+<p>A few key properties:
+| Property | Description | 
+|--|--|
+| Browsable |  This keeps track of whether the book should be added to 'My Books' by default for new users. More on that later. |</p>
+<h2 id="librarybook">LibraryBook</h2>
+<p>The <a href="https://devops.wisetechglobal.com/wtg/BorderWise/_git/Common?path=%2FCommon%2FModels%2FLibraryBook.cs&amp;_a=contents&amp;version=GBmaster">LibraryBook</a> type is used to represent books that are stored in a <a href="https://devops.wisetechglobal.com/wtg/BorderWise/_git/Common?path=%2FCommon%2FModels%2FUser.cs&amp;_a=contents&amp;version=GBmaster">User</a> in the Users collection. The Users collection keeps track of all the users that have signed up to BW. When a user decides to place some sort of preference on a book, for example, that they want it in their 'My Books' tab, the information from the corresponding PlanBook will be used to make a LibraryBook that is stored in that particular user's books list in the Users collection. To represent that the user has chosen to add it to their 'My Books', we set <code>browsable = true</code> for this LibraryBook. The 'My Books' list is constructed from this book list, filtering through and getting all the books where <code>browsable = true.</code>
+<img alt="UsersCollection.png" src="/.attachments/UsersCollection-ddcc0686-048c-4a3f-9fd8-d84140faad28.png =900x" /> <img alt="MyBooks.png" src="/.attachments/MyBooks-7e0b183a-716a-422d-a7ed-e4ef2ff5597a.png =x200" /></p>
+<p>A few key properties:</p>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Browsable</td>
+<td>This determines whether the book should show in 'My Books' for this particular user.</td>
+</tr>
+<tr>
+<td>Searchable</td>
+<td>This determines whether the book should be searched when the 'My Books' search option is toggled on.</td>
+</tr>
+</tbody>
+</table>
+<h1 id="how-are-the-my-books-and-library-tab-lists">How are the 'My Books' and 'Library' tab lists?</h1>
+<p>The 'My Books' tab list is constructed as the list of LibraryBook type books in the User's book list that have `browsable = true. </p>
+<p>The 'Library' tab list is constructed as the list of PlanBook type books in the Plan of the country that the user has selected, merged with the PlanBook type books from the global Plan. </p>
+<h1 id="how-do-we-populate-a-users-my-books-list-when-a-user-is-first-created">How do we populate a user's 'my books' list when a user is first created?</h1>
+<p>As BW devs and product specialists, we have the ability to edit and create books. When doing so, you will notice the option to <code>Show in My Books by default for new clients</code>. By clicking this checkbox, it means that we set the corresponding PlanBook to have property <code>browsable = true</code>.
+<img alt="ShowInMyBooks.png" src="/.attachments/ShowInMyBooks-d16def38-dfd6-4a65-8f26-a4942fdcf0ff.png" />
+When we create a new user, we look in the plan repository and find any books where either <code>browsable = true</code> or <code>searchable = true</code>. For these matching books, we create a new, corresponding LibraryBook and add it to the new user's book list. Hence, any book that had the <code>Show in My Books by default for new clients</code> checkbox checked at that point in time, will be added to the new user's book list.</p>
+<h1 id="how-does-a-user-update-their-my-books-list">How does a user update their 'My Books' list?</h1>
+<p>A user can add a book to their 'My Books' list by clicking on the green plus button to the right of the book name in their library. 
+<img alt="Add.png" src="/.attachments/Add-570988b4-3a7f-406d-a514-f8a90010e9d9.png" />
+When they click this button, we first look in the user's book list to see if the book already exists there. If it does, we set <code>browsable = true</code> and <code>searchable = true</code> for this LibraryBook. If it is not there, we create a new LibraryBook with the same information as the corresponding PlanBook but with <code>browsable = true</code> and <code>searchable = true</code>.</p>
+<p>A user may remove a book from 'My Books' by clicking on the minus arrow to the right of the book name in the 'My Books' tab. When they click this button, the book is deleted from their user book list altogether (but remains in the plan collection so will still show under the library tab).
+<img alt="Remove.png" src="/.attachments/Remove-e3d1796b-7c73-48d6-8d6d-637663ad4c3e.png" /></p>
+<h1 id="what-is-the-searchable-flag">What is the searchable flag?</h1>
+<p>Books in 'My Books' have the option to be made 'searchable'. This is controlled by the checkbox to the left of the book name. This means, that when searching within my books, we will only search the books that have this box checked. 
+<img alt="MyBooks.png" src="/.attachments/MyBooks-e7921f6b-d48a-4e58-8cbb-ca64776d7ece.png" /> <img alt="MyBooksFilter.png" src="/.attachments/MyBooksFilter-fe123831-f994-42b5-be4c-5052b65d5ee2.png" /></p>
+<h1 id="clarifying-some-references">Clarifying some references</h1>
+<p>Throughout the codebase, there are various lists of books and it is not always clear what type of book they are referring to. Here is a table to make it easier to follow. </p>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Type referred to</th>
+<th>Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>library.service.js</td>
+<td>LibraryBook</td>
+<td>service.data.books</td>
+</tr>
+<tr>
+<td>library.service.js</td>
+<td>PlanBook</td>
+<td>service.data.libraryBooks</td>
+</tr>
+<tr>
+<td>books.controller.js</td>
+<td>LibraryBook</td>
+<td>vm.myBooks</td>
+</tr>
+<tr>
+<td>books.controller.js</td>
+<td>PlanBook</td>
+<td>vm.libraryBooks</td>
+</tr>
+</tbody>
+</table>
+              
+            </div>
+          </div><footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
